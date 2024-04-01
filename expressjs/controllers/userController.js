@@ -1,16 +1,11 @@
-// userController.js
-
 const User = require('../models/userModel');
 
-// Simulando una base de datos de usuarios
 let users = [];
 
-// Controlador para obtener todos los usuarios
 exports.getUsers = (req, res) => {
     res.json(users);
 };
 
-// Controlador para obtener un usuario por su ID
 exports.getUserById = (req, res) => {
     const userId = parseInt(req.params.id);
     const user = users.find(user => user.id === userId);
@@ -21,7 +16,6 @@ exports.getUserById = (req, res) => {
     }
 };
 
-// Controlador para crear un nuevo usuario
 exports.createUser = (req, res) => {
     console.log('Solicitud para crear un nuevo usuario recibida');
     const { name, email } = req.body;
@@ -30,7 +24,6 @@ exports.createUser = (req, res) => {
     res.status(201).json(newUser);
 };
 
-// Controlador para actualizar un usuario
 exports.updateUser = (req, res) => {
     const userId = parseInt(req.params.id);
     const { name, email } = req.body;
@@ -44,7 +37,6 @@ exports.updateUser = (req, res) => {
     }
 };
 
-// Controlador para eliminar un usuario
 exports.deleteUser = (req, res) => {
     const userId = parseInt(req.params.id);
     const userIndex = users.findIndex(user => user.id === userId);

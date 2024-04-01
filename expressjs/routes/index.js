@@ -1,10 +1,7 @@
-// index.js
-
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
 
-// Rutas para usuarios
 router.get('/users', userController.getUsers); // Obtener todos los usuarios
 router.get('/users/:id', userController.getUserById); // Obtener un usuario por su ID
 router.post('/users', userController.createUser); // Crear un nuevo usuario

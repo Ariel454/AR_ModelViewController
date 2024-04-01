@@ -1,21 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TextField, Button, Grid, Typography } from '@mui/material';
+import { useParams } from 'react-router-dom'; 
 
-interface CreateUserFormProps {
-  onCreate: (userData: { name: string, email: string }) => void;
+interface EditUserProps {
 }
 
-const CreateUserForm: React.FC<CreateUserFormProps> = ({ onCreate }) => {
-  const [name, setName] = useState<string>('');
+const EditUser: React.FC<EditUserProps> = ({  }) => {
+    const { id } = useParams<{ id: string }>();
+    const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [message, setMessage] = useState<string>('');
 
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/api/users/${id}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch user');
+        }
+        const user = await response.json();
+        setName(user.name);
+        setEmail(user.email);
+      } catch (error) {
+        console.error('Error fetching user:', error);
+      }
+    };
+
+    fetchUser();
+  }, [id]); 
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    
+
     try {
-      const response = await fetch('http://localhost:3000/api/users', {
-        method: 'POST',
+      const response = await fetch(`http://localhost:3000/api/users/${id}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -23,24 +43,19 @@ const CreateUserForm: React.FC<CreateUserFormProps> = ({ onCreate }) => {
       });
 
       if (!response.ok) {
-        throw new Error('Error al crear usuario');
+        throw new Error('Error al actualizar usuario');
       }
 
-      const newUser = await response.json();
-      onCreate(newUser);
-      setName('');
-      setEmail('');
-      setMessage('Usuario creado exitosamente');
-      window.location.reload();
+      setMessage('Usuario actualizado exitosamente');
     } catch (error) {
       console.error('Error:', error);
-      setMessage('Error al crear usuario');
+      setMessage('Error al actualizar usuario');
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <Grid container spacing={2}>
+      <Grid container spacing={2} style={{marginTop: 20}}>
         <Grid item xs={12} sm={6}>
           <TextField
             label="Name"
@@ -61,7 +76,7 @@ const CreateUserForm: React.FC<CreateUserFormProps> = ({ onCreate }) => {
         </Grid>
         <Grid item xs={12}>
           <Button variant="contained" color="primary" type="submit">
-            Create User
+            Update User
           </Button>
         </Grid>
         {message && (
@@ -76,4 +91,4 @@ const CreateUserForm: React.FC<CreateUserFormProps> = ({ onCreate }) => {
   );
 };
 
-export default CreateUserForm;
+export default EditUser;

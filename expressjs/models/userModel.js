@@ -1,5 +1,3 @@
-// userModel.js
-
 class User {
     constructor(id, name, email) {
         this.id = id;

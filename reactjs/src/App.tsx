@@ -1,31 +1,36 @@
-import React, { useState } from 'react';
-import logo from './logo.svg';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // Importa Routes
 import './App.css';
 import CreateUserForm from './components/CreateUserForm';
 import ListUsers from './components/ListUsers';
-import { List } from '@mui/material';
-
+import EditUser from './components/EditUser'; 
+import ViewUser
+ from './components/ViewUser';
 interface User {
   name: string;
   email: string;
 }
 
 function App() {
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = React.useState<User[]>([]);
 
   const handleCreateUser = (newUser: User) => {
-    // Aquí puedes enviar la solicitud al backend para crear un nuevo usuario
     console.log('Nuevo usuario:', newUser);
     setUsers([...users, newUser]);
   };
 
   return (
-    <div>
-      <h1>List of Users</h1>
-      <CreateUserForm onCreate={handleCreateUser} />
-      {/* Aquí puedes mostrar la lista de usuarios */}
-      <ListUsers/>
-    </div>
+    <Router> 
+      <div>
+        <h1>List of Users</h1>
+        <CreateUserForm onCreate={handleCreateUser} />
+        <Routes> 
+          <Route path="/" element={<ListUsers />} /> 
+          <Route path="/edit/:id" element={<EditUser />} />
+          <Route path="/view/:id" element={<ViewUser />} /> 
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
