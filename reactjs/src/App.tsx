@@ -1,24 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import CreateUserForm from './components/CreateUserForm';
+import ListUsers from './components/ListUsers';
+import { List } from '@mui/material';
+
+interface User {
+  name: string;
+  email: string;
+}
 
 function App() {
+  const [users, setUsers] = useState<User[]>([]);
+
+  const handleCreateUser = (newUser: User) => {
+    // Aquí puedes enviar la solicitud al backend para crear un nuevo usuario
+    console.log('Nuevo usuario:', newUser);
+    setUsers([...users, newUser]);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>List of Users</h1>
+      <CreateUserForm onCreate={handleCreateUser} />
+      {/* Aquí puedes mostrar la lista de usuarios */}
+      <ListUsers/>
     </div>
   );
 }
