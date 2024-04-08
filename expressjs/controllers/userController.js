@@ -1,4 +1,6 @@
 const User = require('../models/userModel');
+const jwt = require('jsonwebtoken');
+const secretKey = 'tu_secreto';
 
 let users = [];
 
@@ -18,8 +20,8 @@ exports.getUserById = (req, res) => {
 
 exports.createUser = (req, res) => {
     console.log('Solicitud para crear un nuevo usuario recibida');
-    const { name, email } = req.body;
-    const newUser = new User(Date.now(), name, email);
+    const { name, email, password } = req.body;
+    const newUser = new User(Date.now(), name, email, password);
     users.push(newUser);
     res.status(201).json(newUser);
 };
@@ -46,4 +48,20 @@ exports.deleteUser = (req, res) => {
     } else {
         res.status(404).json({ message: 'Usuario no encontrado' });
     }
+};
+
+exports.login = (req, res) => {
+    const { username, password } = req.body;
+    // Buscar al usuario por su correo electrónico
+    const user = users.find(user => user.email === username);
+    if (!user) {
+        return res.status(401).json({ message: 'Usuario no encontrado' });
+    }
+    // Verificar la contraseña en texto plano
+    if (password !== user.password) {
+        return res.status(401).json({ message: 'Contraseña incorrecta' });
+    }
+    // Si las credenciales son válidas, generar un token de sesión
+    const token = jwt.sign({ userId: user.id }, secretKey, { expiresIn: '1h' });
+    res.json({ token });
 };

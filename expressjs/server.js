@@ -1,5 +1,8 @@
 const express = require('express');
 const cors = require('cors');
+const LocalStrategy = require('passport').Strategy;
+const userController = require('./controllers/userController');
+
 const app = express();
 const apiRouter = require('./routes/index');
 const path = require('path');
@@ -26,3 +29,4 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Servidor Express en ejecución en el puerto ${PORT}`);
 });
+

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { TextField, Button, Grid, Typography } from '@mui/material';
 
+import ListUsers from './ListUsers';
+
 interface CreateUserFormProps {
   onCreate: (userData: { name: string, email: string }) => void;
 }
@@ -9,6 +11,7 @@ const CreateUserForm: React.FC<CreateUserFormProps> = ({ onCreate }) => {
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [message, setMessage] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -19,7 +22,7 @@ const CreateUserForm: React.FC<CreateUserFormProps> = ({ onCreate }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, email }),
+        body: JSON.stringify({ name, email, password }),
       });
 
       if (!response.ok) {
@@ -30,8 +33,8 @@ const CreateUserForm: React.FC<CreateUserFormProps> = ({ onCreate }) => {
       onCreate(newUser);
       setName('');
       setEmail('');
+      setPassword('');
       setMessage('Usuario creado exitosamente');
-      window.location.reload();
     } catch (error) {
       console.error('Error:', error);
       setMessage('Error al crear usuario');
@@ -39,6 +42,7 @@ const CreateUserForm: React.FC<CreateUserFormProps> = ({ onCreate }) => {
   };
 
   return (
+    <div>
     <form onSubmit={handleSubmit}>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
@@ -59,6 +63,15 @@ const CreateUserForm: React.FC<CreateUserFormProps> = ({ onCreate }) => {
             onChange={(e) => setEmail(e.target.value)}
           />
         </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            label="Contraseña"
+            variant="outlined"
+            fullWidth
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </Grid>
         <Grid item xs={12}>
           <Button variant="contained" color="primary" type="submit">
             Create User
@@ -73,6 +86,9 @@ const CreateUserForm: React.FC<CreateUserFormProps> = ({ onCreate }) => {
         )}
       </Grid>
     </form>
+    <ListUsers/>
+    </div>
+
   );
 };
 
