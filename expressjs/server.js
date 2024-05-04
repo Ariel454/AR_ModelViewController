@@ -16,6 +16,19 @@ app.use(cors());
 
 // Rutas API
 app.use('/api', apiRouter);
+app.get("/users",(req, res) => {               
+    const htmlResponse = 
+    `<html>
+    <head>
+    <title>
+    API EXPRESS</title>
+    </head>
+    <body>
+    <h1>Proyecto backend</h1>
+    </body>
+    </html>`;
+    res.send(htmlResponse);
+});
 
 
 // Puerto de escucha
