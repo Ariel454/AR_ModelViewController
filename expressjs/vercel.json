@@ -1,7 +1,7 @@
 {
     "builds": [
         {
-            "src": "/serve2r.js",
+            "src": "/server.js",
             "use": "@vercel/node"
       } 
 ],
