@@ -2,7 +2,16 @@ const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 const secretKey = 'tu_secreto';
 
-let users = [];
+
+
+const predefinedUsers = [
+    new User(1, 'Ariel Raura', 'ariel@gmail.com', 'ariel123'),
+    new User(2, 'Usuario2', 'usuario2@example.com', 'password2'),
+    new User(3, 'Usuario3', 'usuario3@example.com', 'password3')
+];
+
+// Agregar los usuarios predefinidos a la lista de usuarios
+let users = [...predefinedUsers];
 
 exports.getUsers = (req, res) => {
     res.json(users);

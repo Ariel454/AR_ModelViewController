@@ -5,6 +5,7 @@ import ListUsers from './components/ListUsers';
 import EditUser from './components/EditUser';
 import ViewUser from './components/ViewUser';
 import Login from './components/Login';
+import MiniCore from './components/MiniCore/MiniCore';
 
 interface User {
   name: string;
@@ -21,7 +22,8 @@ function App() {
   };
 
   return (
-    <Router>
+    <MiniCore/>
+   /* <Router>
       <Routes>
         {!loggedIn ? (
           // Si el usuario no está autenticado, redirigir a la página de autenticación
@@ -36,7 +38,7 @@ function App() {
         )}
         <Route path="/authenticate" element={<Login setLoggedIn={setLoggedIn} />} />
       </Routes>
-    </Router>
+    </Router>*/
   );
 }
 
