@@ -1,0 +1,66 @@
+.navbar {
+    background-color: #ffffff !important;
+    box-shadow: 0 8px 8px -8px rgba(7,7,7,.16)!important;
+  }
+  
+  .toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .logo img {
+    width: 50px; 
+  }
+  
+  .MuiButtonBase-root.logo:hover {
+    background-color: transparent !important; 
+  }
+  
+  
+  .user-info {
+    display: flex;
+    align-items: center;
+    
+  }
+  
+  .user-avatar {
+    margin-right: 10px; 
+    font-family: Prelo-Medium !important;
+    color: #989898 !important;
+    background: #fafbfc !important;
+    border: 1px solid #d5d5d5 !important; 
+    font-size: 1em !important;
+    height: 35px !important;
+    width: 35px !important;
+    cursor: pointer;
+  }
+  
+  .user-name {
+    font-family: 'Prelo Slab W01 Book', sans-serif !important; 
+    font-size: 14px !important;
+    text-transform: uppercase;
+    color: #10265c;
+    cursor: pointer;
+  }
+  
+  .divider.vertical {
+    border-left: 1px solid #dee3ed;
+    height: 24px;
+    margin: auto 16px;
+  }
+  
+  .logout-button {
+    color: #10265c !important;
+    font-size: 14px !important;
+    font-family: PreloSlab-Book !important;
+    text-transform: none !important;
+    margin-left: -20px !important;
+  }
+  
+  .logout-button:hover {
+    background-color: transparent !important; 
+    border-color: transparent !important; 
+  }
+  
+  

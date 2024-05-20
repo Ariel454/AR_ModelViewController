@@ -1,0 +1,75 @@
+{
+    "user": {
+      "name": "Ariel",
+      "lastname": "Raura"
+    },
+    "sidebarOptions": {
+      "options": [
+        "Mis productos",
+        "Transferencias",
+        "Pagos",
+        "Solicitar Productos",
+        "Otros Servicios",
+        "Mis Contactos",
+        "Mi Perfil",
+        "Clave Digital",
+        "Directas",
+        "Interbancarias",
+        "Cambio de clave tarjeta",
+        "Bloqueo temporal de tarjetas de débito",
+        "Certificaos y Referencias",
+        "Estaos de cuenta"
+      ]
+    },
+    "infoInvestments": {
+      "title": "Invierte y haz crecer tu dinero",
+      "info": "Simula cuánto ganarías por invertir tus ahorros.",
+      "button": "Simular mi inversión"
+    },
+    "title": {
+      "titles": [
+        "Mis productos",
+        "Cuentas de ahorros",
+        "Créditos",
+        "Disponible",
+        "Contable",
+        "Fecha de pago"
+      ]
+    },
+    "cuentas": {
+      "cuenta1": {
+        "nombre": "AH01",
+        "id": "12345",
+        "saldo": "28,56"
+      },
+      "cuenta2": {
+        "nombre": "AH02",
+        "id": "12346",
+        "saldo": "0,14"
+      },
+      "cuenta3": {
+        "nombre": "AH03",
+        "id": "12347",
+        "saldo": "3,84"
+      },
+      "cuenta4": {
+        "nombre": "AH04",
+        "id": "12348",
+        "saldo": "0,00"
+      },
+      "cuenta5": {
+        "nombre": "PRECISO",
+        "id": "3653XXXX",
+        "saldo": "291,28",
+        "fecha": "02/04/2024"
+      }
+    },
+    "footer": {
+      "options": [
+        "Ubíquenos",
+        "Contáctenos",
+        "Seguridad"
+      ]
+    }
+  }
+  
