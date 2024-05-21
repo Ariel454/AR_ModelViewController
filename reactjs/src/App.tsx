@@ -28,8 +28,8 @@ function App() {
   };
 
   return (
-    //<ExtendedLayout/>
-    <MiniCore />
+    <ExtendedLayout />
+    //<MiniCore />
     //  <Router>
     //     <Routes>
     //       {!loggedIn ? (

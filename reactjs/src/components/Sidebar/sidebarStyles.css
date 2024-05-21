@@ -1,0 +1,61 @@
+.sidebar {
+  width: 250px;
+  height: 100%;
+  position: sticky;
+  top: 4rem;
+  background-color: #ffffff;
+  border-right: 1px solid #ddd;
+  box-shadow: 8px 0 8px -8px rgba(7, 7, 7, 0.16);
+  padding-top: 24px;
+  overflow-y: auto;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar .custom-list-item {
+  padding: 12px 18px 12px 22px;
+  transition: background-color 0.3s ease;
+}
+
+.sidebar .custom-list-item:hover {
+  background-color: #f3f3f5;
+}
+
+.sidebar .custom-list-item.active,
+.sidebar .custom-list-item:hover .active {
+  background-color: #fd0;
+  box-shadow: 0 -8px 8px -8px rgba(7, 7, 7, 0.16) !important;
+}
+
+.sidebar .custom-list-item .MuiListItemText-root .MuiTypography-root {
+  font-size: 15px;
+  font-family: Prelo-Medium, sans-serif !important;
+  color: #0f265c !important;
+}
+
+.sidebar .custom-list-item.active .MuiListItemText-root .MuiTypography-root {
+  font-weight: 700 !important;
+}
+
+.badge-root {
+  margin-right: 70px;
+}
+
+.sidebar .subitem {
+  background-color: #f3f3f5;
+  padding: 18px 24px 18px 32px;
+}
+
+.sidebar .subitem .MuiListItemText-root .MuiTypography-root {
+  font-size: 15px;
+  font-family: Prelo-Medium, sans-serif !important;
+}
+
+.sidebar .subitem:hover {
+  background-color: rgb(223, 223, 223);
+  padding: 18px 24px 18px 32px;
+}

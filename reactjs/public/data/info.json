@@ -1,75 +1,70 @@
 {
-    "user": {
-      "name": "Ariel",
-      "lastname": "Raura"
+  "user": {
+    "name": "Ariel",
+    "lastname": "Raura"
+  },
+  "sidebarOptions": {
+    "options": [
+      "Gestión de usuarios",
+      "Gestión de Premios",
+      "Seguimiento y Análisis",
+      "Validación de Facturas",
+      "Registro de Facturas",
+      "Gestión de Premios",
+      "Seguimiento y Análisis",
+      "Validación de Facturas",
+      "Registro de Facturas",
+      "Registro y Subida de Facturas",
+      "Visualización de Puntos y Premios",
+      "Reclamo de Premios",
+      "Certificaos y Referencias",
+      "Estados de cuenta"
+    ]
+  },
+  "infoInvestments": {
+    "title": "Cuando acumule suficientes puntos, podrán reclamar premios a través de la plataforma",
+    "info": "El sistema gestionará el proceso de reclamos",
+    "button": "Simular puntos"
+  },
+  "title": {
+    "titles": [
+      "Gestión de usuarios",
+      "Gestión de Premios",
+      "Seguimiento y Análisis",
+      "Validación de Facturas",
+      "Registro de Facturas",
+      "Gestión de Premios"
+    ]
+  },
+  "cuentas": {
+    "cuenta1": {
+      "nombre": "AH01",
+      "id": "12345",
+      "saldo": "28,56"
     },
-    "sidebarOptions": {
-      "options": [
-        "Mis productos",
-        "Transferencias",
-        "Pagos",
-        "Solicitar Productos",
-        "Otros Servicios",
-        "Mis Contactos",
-        "Mi Perfil",
-        "Clave Digital",
-        "Directas",
-        "Interbancarias",
-        "Cambio de clave tarjeta",
-        "Bloqueo temporal de tarjetas de débito",
-        "Certificaos y Referencias",
-        "Estaos de cuenta"
-      ]
+    "cuenta2": {
+      "nombre": "AH02",
+      "id": "12346",
+      "saldo": "0,14"
     },
-    "infoInvestments": {
-      "title": "Invierte y haz crecer tu dinero",
-      "info": "Simula cuánto ganarías por invertir tus ahorros.",
-      "button": "Simular mi inversión"
+    "cuenta3": {
+      "nombre": "AH03",
+      "id": "12347",
+      "saldo": "3,84"
     },
-    "title": {
-      "titles": [
-        "Mis productos",
-        "Cuentas de ahorros",
-        "Créditos",
-        "Disponible",
-        "Contable",
-        "Fecha de pago"
-      ]
+    "cuenta4": {
+      "nombre": "AH04",
+      "id": "12348",
+      "saldo": "0,00"
     },
-    "cuentas": {
-      "cuenta1": {
-        "nombre": "AH01",
-        "id": "12345",
-        "saldo": "28,56"
-      },
-      "cuenta2": {
-        "nombre": "AH02",
-        "id": "12346",
-        "saldo": "0,14"
-      },
-      "cuenta3": {
-        "nombre": "AH03",
-        "id": "12347",
-        "saldo": "3,84"
-      },
-      "cuenta4": {
-        "nombre": "AH04",
-        "id": "12348",
-        "saldo": "0,00"
-      },
-      "cuenta5": {
-        "nombre": "PRECISO",
-        "id": "3653XXXX",
-        "saldo": "291,28",
-        "fecha": "02/04/2024"
-      }
-    },
-    "footer": {
-      "options": [
-        "Ubíquenos",
-        "Contáctenos",
-        "Seguridad"
-      ]
+    "cuenta5": {
+      "nombre": "PRECISO",
+      "id": "3653XXXX",
+      "saldo": "291,28",
+      "fecha": "02/04/2024"
     }
+  },
+  "footer": {
+    "options": ["Ubíquenos", "Contáctenos", "Seguridad"]
   }
-  
+}

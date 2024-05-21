@@ -44,7 +44,7 @@ const MiniCore: React.FC = () => {
 
     try {
       const response = await fetch(
-        "https://minicore-grades-back.onrender.com/compute",
+        "https://ar-mvc-api.vercel.app/api/students/compute",
         {
           method: "POST",
           headers: {
