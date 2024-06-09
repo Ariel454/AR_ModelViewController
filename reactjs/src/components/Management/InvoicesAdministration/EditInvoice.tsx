@@ -6,7 +6,6 @@ interface EditInvoiceProps {}
 
 const EditInvoice: React.FC<EditInvoiceProps> = ({}) => {
   const { id } = useParams<{ id: string }>();
-  const [recibo, setRecibo] = useState<string>("");
   const [codigo, setCodigo] = useState<string>("");
   const [userId, setUserId] = useState<string>("");
   const [fecha, setFecha] = useState<string>("");
@@ -23,11 +22,13 @@ const EditInvoice: React.FC<EditInvoiceProps> = ({}) => {
           throw new Error("Failed to fetch invoice");
         }
         const invoice = await response.json();
-        setRecibo(invoice.recibo);
         setCodigo(invoice.codigo);
         setUserId(invoice.user_id);
-        setFecha(invoice.fecha);
+        const date = new Date(invoice.fecha);
+        const formattedDate = date.toISOString().split("T")[0];
+        setFecha(formattedDate);
         setPrecio(invoice.precio.toString());
+        console.log("Fecha" + fecha);
       } catch (error) {
         console.error("Error fetching invoice:", error);
       }
@@ -46,7 +47,6 @@ const EditInvoice: React.FC<EditInvoiceProps> = ({}) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          recibo,
           codigo,
           user_id: parseInt(userId, 10),
           fecha,
@@ -68,15 +68,6 @@ const EditInvoice: React.FC<EditInvoiceProps> = ({}) => {
   return (
     <form onSubmit={handleSubmit}>
       <Grid container spacing={2} style={{ marginTop: 20 }}>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            label="Recibo"
-            variant="outlined"
-            fullWidth
-            value={recibo}
-            onChange={(e) => setRecibo(e.target.value)}
-          />
-        </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
             label="Código"

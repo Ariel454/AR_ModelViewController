@@ -3,6 +3,7 @@ const router = express.Router();
 const userController = require("../controllers/userController");
 const studentController = require("../controllers/studentController");
 const invoiceController = require("../controllers/invoiceController");
+const claimController = require("../controllers/claimController"); // Importa el controlador de reclamos
 
 // Rutas para usuarios
 router.get("/users", userController.getUsers); // Obtener todos los usuarios
@@ -23,5 +24,12 @@ router.get("/invoices/:id", invoiceController.getInvoiceById); // Obtener una fa
 router.post("/invoices", invoiceController.createInvoice); // Crear una nueva factura
 router.put("/invoices/:id", invoiceController.updateInvoice); // Actualizar una factura por su ID
 router.delete("/invoices/:id", invoiceController.deleteInvoice); // Eliminar una factura por su ID
+
+// Rutas para reclamos (claims)
+router.get("/claims", claimController.getClaims); // Obtener todos los reclamos
+router.get("/claims/:id", claimController.getClaimById); // Obtener un reclamo por su ID
+router.post("/claims", claimController.createClaim); // Crear un nuevo reclamo
+router.put("/claims/:id", claimController.updateClaim); // Actualizar un reclamo por su ID
+router.delete("/claims/:id", claimController.deleteClaim); // Eliminar un reclamo por su ID
 
 module.exports = router;

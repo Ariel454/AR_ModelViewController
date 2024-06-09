@@ -10,80 +10,81 @@ import {
   Button,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import { Invoice } from "../../../types/invoice";
 
-const ListInvoices = () => {
-  const [invoices, setInvoices] = useState<Invoice[]>([]);
+interface Claim {
+  id: number;
+  user_id: number;
+  award_id: number;
+}
+
+const ListClaims = () => {
+  const [claims, setClaims] = useState<Claim[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchInvoices = async () => {
+    const fetchClaims = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/invoices");
+        const response = await fetch("http://localhost:3000/api/claims");
         if (!response.ok) {
-          throw new Error("Failed to fetch invoices");
+          throw new Error("Failed to fetch claims");
         }
         const data = await response.json();
-        setInvoices(data);
+        setClaims(data);
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching invoices:", error);
+        console.error("Error fetching claims:", error);
         setLoading(false);
       }
     };
 
-    fetchInvoices();
+    fetchClaims();
   }, []);
 
-  const handleDeleteInvoice = async (invoiceId: number) => {
+  const handleDeleteClaim = async (claimId: number) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/invoices/${invoiceId}`,
+        `http://localhost:3000/api/claims/${claimId}`,
         {
           method: "DELETE",
         }
       );
 
       if (!response.ok) {
-        throw new Error("Failed to delete invoice");
+        throw new Error("Failed to delete claim");
       }
 
-      setInvoices(invoices.filter((invoice) => invoice.id !== invoiceId));
+      setClaims(claims.filter((claim) => claim.id !== claimId));
     } catch (error) {
-      console.error("Error deleting invoice:", error);
+      console.error("Error deleting claim:", error);
     }
   };
 
   return (
     <TableContainer component={Paper}>
-      <Table aria-label="list of invoices">
+      <Table aria-label="list of claims">
         <TableHead>
           <TableRow>
             <TableCell>ID</TableCell>
-            <TableCell>Código</TableCell>
             <TableCell>User ID</TableCell>
-            <TableCell>Fecha</TableCell>
-            <TableCell>Precio</TableCell>
+            <TableCell>Award ID</TableCell>
             <TableCell>Actions</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {loading ? (
             <TableRow>
-              <TableCell colSpan={6}>Loading...</TableCell>
+              <TableCell colSpan={4}>Loading...</TableCell>
             </TableRow>
           ) : (
-            invoices.map((invoice) => (
-              <TableRow key={invoice.id}>
-                <TableCell>{invoice.id}</TableCell>
-                <TableCell>{invoice.codigo}</TableCell>
-                <TableCell>{invoice.user_id}</TableCell>
-                <TableCell>{invoice.fecha}</TableCell>
-                <TableCell>{invoice.precio}</TableCell>
+            claims.map((claim) => (
+              <TableRow key={claim.id}>
+                <TableCell>{claim.id}</TableCell>
+                <TableCell>{claim.user_id}</TableCell>
+                <TableCell>{claim.award_id}</TableCell>
                 <TableCell>
                   <Button
                     component={Link}
-                    to={`/edit-invoice/${invoice.id}`}
+                    to={`/edit-claim/${claim.id}`}
                     variant="outlined"
                     color="primary"
                   >
@@ -91,14 +92,14 @@ const ListInvoices = () => {
                   </Button>
                   <Button
                     component={Link}
-                    to={`/view-invoice/${invoice.id}`}
+                    to={`/view-claim/${claim.id}`}
                     variant="outlined"
                     color="primary"
                   >
                     View
                   </Button>
                   <Button
-                    onClick={() => handleDeleteInvoice(invoice.id)}
+                    onClick={() => handleDeleteClaim(claim.id)}
                     variant="outlined"
                     color="secondary"
                   >
@@ -114,4 +115,4 @@ const ListInvoices = () => {
   );
 };
 
-export default ListInvoices;
+export default ListClaims;

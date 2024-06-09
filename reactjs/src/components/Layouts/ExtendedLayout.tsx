@@ -9,6 +9,10 @@ import CreateUserForm from "../Management/UsersAdministration/CreateUserForm";
 import FacturaForm from "../UploadInvoice/UploadInvoice";
 import CreateInvoiceForm from "../Management/InvoicesAdministration/CreateInvoiceForm";
 import { Invoice } from "../../types/invoice";
+import EditInvoice from "../Management/InvoicesAdministration/EditInvoice";
+import ViewInvoice from "../Management/InvoicesAdministration/ViewInvoice";
+import CreateClaimForm from "../Management/ClaimsAdministration/CreateClaimForm";
+import { Claim } from "../../types/claim";
 
 interface InfoInvestments {
   title: string;
@@ -34,6 +38,7 @@ const ExtendedLayout: React.FC = () => {
   const [footerOptions, setFooterOptions] = useState<string[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [invoices, setInvoices] = useState<Invoice[]>([]);
+  const [claims, setClaims] = useState<Claim[]>([]);
 
   const handleCreateUser = (newUser: User) => {
     console.log("Nuevo usuario:", newUser);
@@ -43,6 +48,11 @@ const ExtendedLayout: React.FC = () => {
   const handleCreateInvoice = (newInvoice: Invoice) => {
     console.log("Nuevo usuario:", newInvoice);
     setInvoices([...invoices, newInvoice]);
+  };
+
+  const handleCreateClaim = (newClaim: Claim) => {
+    console.log("Nuevo usuario:", newClaim);
+    setClaims([...claims, newClaim]);
   };
 
   useEffect(() => {
@@ -72,13 +82,22 @@ const ExtendedLayout: React.FC = () => {
             path="gestion-usuarios"
             element={<CreateUserForm onCreate={handleCreateUser} />}
           />
+          <Route path="edit-user/:id" element={<EditUser />} />
+          <Route path="view-user/:id" element={<ViewUser />} />
           <Route
             path="gestion-facturas"
             element={<CreateInvoiceForm onCreate={handleCreateInvoice} />}
           />
+          <Route path="edit-invoice/:id" element={<EditInvoice />} />
+          <Route path="view-invoice/:id" element={<ViewInvoice />} />
           <Route path="subir-factura" element={<FacturaForm />} />
-          <Route path="edit/:id" element={<EditUser />} />
-          <Route path="view/:id" element={<ViewUser />} />
+          <Route
+            path="gestion-reclamos"
+            element={<CreateClaimForm onCreate={handleCreateClaim} />}
+          />
+          <Route path="edit-invoice/:id" element={<EditInvoice />} />
+          <Route path="view-invoice/:id" element={<ViewInvoice />} />
+          <Route path="subir-factura" element={<FacturaForm />} />
         </Routes>
       </div>
     </div>

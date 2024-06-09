@@ -40,7 +40,6 @@ const CreateInvoiceForm: React.FC<CreateInvoiceFormProps> = ({ onCreate }) => {
 
       const newInvoice = await response.json();
       onCreate(newInvoice);
-      setRecibo("");
       setCodigo("");
       setUserId("");
       setFecha("");

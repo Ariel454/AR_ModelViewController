@@ -3,13 +3,14 @@ const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const secretKey = "tu_secreto";
 
+let nextInvoiceId = 4; // Empieza en 4 ya que tienes 3 facturas predefinidas
+
 const predefinedInvoices = [
-  new Invoice(1, "R001", "F001", 1, new Date(), 150.0),
-  new Invoice(2, "R002", "F002", 1, new Date(), 200.0),
-  new Invoice(3, "R003", "F003", 2, new Date(), 250.0),
+  new Invoice(1, "F001", 1, new Date(), 150.0),
+  new Invoice(2, "F002", 1, new Date(), 200.0),
+  new Invoice(3, "F003", 2, new Date(), 250.0),
 ];
 
-// Agregar las facturas predefinidas a la lista de facturas
 let invoices = [...predefinedInvoices];
 
 exports.getInvoices = (req, res) => {
@@ -28,27 +29,28 @@ exports.getInvoiceById = (req, res) => {
 
 exports.createInvoice = (req, res) => {
   console.log("Solicitud para crear una nueva factura recibida");
-  const { recibo, codigo, user_id, fecha, precio } = req.body;
+  const { codigo, user_id, fecha, precio } = req.body;
+
+  // Generar el nuevo ID automáticamente
   const newInvoice = new Invoice(
-    Date.now(),
-    recibo,
+    nextInvoiceId++,
     codigo,
     user_id,
     new Date(fecha),
     precio
   );
+
   invoices.push(newInvoice);
   res.status(201).json(newInvoice);
 };
 
 exports.updateInvoice = (req, res) => {
   const invoiceId = parseInt(req.params.id);
-  const { recibo, codigo, fecha, precio } = req.body;
+  const { codigo, fecha, precio } = req.body;
   const invoiceIndex = invoices.findIndex(
     (invoice) => invoice.id === invoiceId
   );
   if (invoiceIndex !== -1) {
-    invoices[invoiceIndex].recibo = recibo;
     invoices[invoiceIndex].codigo = codigo;
     invoices[invoiceIndex].fecha = new Date(fecha);
     invoices[invoiceIndex].precio = precio;
