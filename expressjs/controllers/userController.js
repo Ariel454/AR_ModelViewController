@@ -3,9 +3,36 @@ const jwt = require("jsonwebtoken");
 const secretKey = "tu_secreto";
 
 const predefinedUsers = [
-  new User(1, "Ariel Raura", "ariel@gmail.com", "ariel123"),
-  new User(2, "Usuario2", "usuario2@example.com", "password2"),
-  new User(3, "Usuario3", "usuario3@example.com", "password3"),
+  new User(
+    1,
+    "Ariel Raura",
+    "codigo1",
+    "1234567890",
+    "ariel@gmail.com",
+    "ariel123",
+    "Dirección1",
+    100
+  ),
+  new User(
+    2,
+    "Usuario2",
+    "codigo2",
+    "0987654321",
+    "usuario2@example.com",
+    "password2",
+    "Dirección2",
+    50
+  ),
+  new User(
+    3,
+    "Usuario3",
+    "codigo3",
+    "1357924680",
+    "usuario3@example.com",
+    "password3",
+    "Dirección3",
+    75
+  ),
 ];
 
 // Agregar los usuarios predefinidos a la lista de usuarios
