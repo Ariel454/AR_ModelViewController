@@ -48,6 +48,11 @@ const Sidebar: React.FC<SidebarProps> = ({ options }) => {
             <ListItemText primary="Gestión de Reclamos" />
           </ButtonBase>
         </ListItem>
+        <ListItem component="div">
+          <ButtonBase component={NavLink} to="/gestion-premios">
+            <ListItemText primary="Gestión de Premios" />
+          </ButtonBase>
+        </ListItem>
       </List>
     </div>
   );

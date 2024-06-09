@@ -13,6 +13,12 @@ import EditInvoice from "../Management/InvoicesAdministration/EditInvoice";
 import ViewInvoice from "../Management/InvoicesAdministration/ViewInvoice";
 import CreateClaimForm from "../Management/ClaimsAdministration/CreateClaimForm";
 import { Claim } from "../../types/claim";
+import EditClaim from "../Management/ClaimsAdministration/EditClaim";
+import ViewClaim from "../Management/ClaimsAdministration/ViewInvoice";
+import EditAward from "../Management/AwardsAdministration/EditAward";
+import ViewAward from "../Management/AwardsAdministration/ViewAward";
+import CreateAwardForm from "../Management/AwardsAdministration/CreateAwardForm";
+import { Award } from "../../types/award";
 
 interface InfoInvestments {
   title: string;
@@ -39,6 +45,7 @@ const ExtendedLayout: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [claims, setClaims] = useState<Claim[]>([]);
+  const [awards, setAwards] = useState<Award[]>([]);
 
   const handleCreateUser = (newUser: User) => {
     console.log("Nuevo usuario:", newUser);
@@ -53,6 +60,11 @@ const ExtendedLayout: React.FC = () => {
   const handleCreateClaim = (newClaim: Claim) => {
     console.log("Nuevo usuario:", newClaim);
     setClaims([...claims, newClaim]);
+  };
+
+  const handleCreateAward = (newAward: Award) => {
+    console.log("Nuevo usuario:", newAward);
+    setAwards([...awards, newAward]);
   };
 
   useEffect(() => {
@@ -95,8 +107,14 @@ const ExtendedLayout: React.FC = () => {
             path="gestion-reclamos"
             element={<CreateClaimForm onCreate={handleCreateClaim} />}
           />
-          <Route path="edit-invoice/:id" element={<EditInvoice />} />
-          <Route path="view-invoice/:id" element={<ViewInvoice />} />
+          <Route path="edit-claim/:id" element={<EditClaim />} />
+          <Route path="view-claim/:id" element={<ViewClaim />} />
+          <Route
+            path="gestion-premios"
+            element={<CreateAwardForm onCreate={handleCreateAward} />}
+          />
+          <Route path="edit-award/:id" element={<EditAward />} />
+          <Route path="view-award/:id" element={<ViewAward />} />
           <Route path="subir-factura" element={<FacturaForm />} />
         </Routes>
       </div>
