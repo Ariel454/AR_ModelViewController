@@ -1,58 +1,50 @@
 import React, { useState } from "react";
 import "./sidebarStyles.css";
-import {
-  List,
-  ListItem,
-  ListItemText,
-  Collapse,
-  Badge,
-  ButtonBase,
-} from "@mui/material";
+import { List, ListItem, ListItemText, ButtonBase } from "@mui/material";
 import { NavLink } from "react-router-dom";
+import { User } from "../../types/user";
 
 interface SidebarProps {
-  options: string[];
+  user: User | null;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ options }) => {
+const Sidebar: React.FC<SidebarProps> = ({ user }) => {
   const [expandedItem, setExpandedItem] = useState<number | null>(null);
 
-  const handleItemClick = (index: number) => {
-    if (expandedItem === index) {
-      setExpandedItem(null);
-    } else {
-      setExpandedItem(index);
+  const getOptionsByRole = (user: User | null) => {
+    switch (user?.rol) {
+      case "ADM":
+        return [
+          { path: "/gestion-usuarios", label: "Gestión de Usuarios" },
+          { path: "/subir-factura", label: "Subir Factura" },
+          { path: "/gestion-facturas", label: "Gestión de Facturas" },
+          { path: "/gestion-reclamos", label: "Gestión de Reclamos" },
+          { path: "/gestion-premios", label: "Gestión de Premios" },
+        ];
+      case "COM":
+        return [
+          { path: "/gestion-facturas", label: "Gestión de Facturas" },
+          { path: "/gestion-premios", label: "Gestión de Premios" },
+        ];
+      case "CLI":
+        return [{ path: "/subir-factura", label: "Subir Factura" }];
+      default:
+        return [];
     }
   };
+
+  const options = getOptionsByRole(user);
 
   return (
     <div className="sidebar">
       <List>
-        <ListItem component="div">
-          <ButtonBase component={NavLink} to="/gestion-usuarios">
-            <ListItemText primary="Gestión de Usuarios" />
-          </ButtonBase>
-        </ListItem>
-        <ListItem component="div">
-          <ButtonBase component={NavLink} to="/subir-factura">
-            <ListItemText primary="Subir Factura" />
-          </ButtonBase>
-        </ListItem>
-        <ListItem component="div">
-          <ButtonBase component={NavLink} to="/gestion-facturas">
-            <ListItemText primary="Gestión de Facturas" />
-          </ButtonBase>
-        </ListItem>
-        <ListItem component="div">
-          <ButtonBase component={NavLink} to="/gestion-reclamos">
-            <ListItemText primary="Gestión de Reclamos" />
-          </ButtonBase>
-        </ListItem>
-        <ListItem component="div">
-          <ButtonBase component={NavLink} to="/gestion-premios">
-            <ListItemText primary="Gestión de Premios" />
-          </ButtonBase>
-        </ListItem>
+        {options.map((option, index) => (
+          <ListItem key={index} component="div">
+            <ButtonBase component={NavLink} to={option.path}>
+              <ListItemText primary={option.label} />
+            </ButtonBase>
+          </ListItem>
+        ))}
       </List>
     </div>
   );

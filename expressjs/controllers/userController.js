@@ -6,6 +6,7 @@ const predefinedUsers = [
   new User(
     1,
     "Ariel Raura",
+    "ADM",
     "codigo1",
     "1234567890",
     "ariel@gmail.com",
@@ -16,6 +17,7 @@ const predefinedUsers = [
   new User(
     2,
     "Usuario2",
+    "COM",
     "codigo2",
     "0987654321",
     "usuario2@example.com",
@@ -26,6 +28,7 @@ const predefinedUsers = [
   new User(
     3,
     "Usuario3",
+    "CLI",
     "codigo3",
     "1357924680",
     "usuario3@example.com",
@@ -97,5 +100,7 @@ exports.login = (req, res) => {
   }
   // Si las credenciales son válidas, generar un token de sesión
   const token = jwt.sign({ userId: user.id }, secretKey, { expiresIn: "1h" });
-  res.json({ token });
+  // Incluir el usuario en la respuesta
+  res.json({ token, user });
+  console.log(user);
 };

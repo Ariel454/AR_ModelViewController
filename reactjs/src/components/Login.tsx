@@ -1,16 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TextField, Button, Typography, Container } from "@mui/material";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { User } from "../types/user";
 
 interface Props {
   setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
 }
 
-const Login: React.FC<Props> = ({ setLoggedIn }) => {
+const Login: React.FC<Props> = ({ setLoggedIn, setUser }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [token, setToken] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Al montar el componente, revisa si hay un token en el localStorage
+    const savedToken = localStorage.getItem("token");
+    if (savedToken) {
+      console.log("save" + savedToken);
+      setLoggedIn(true);
+      navigate("/"); // Redirigir a la página principal o la ruta deseada
+    }
+  }, [setLoggedIn, navigate]);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -25,21 +38,16 @@ const Login: React.FC<Props> = ({ setLoggedIn }) => {
         throw new Error("Usuario o contraseña incorrectos");
       }
       const data = await response.json();
-      const token = data.token;
+      const { token, user } = data;
+      console.log("user 2213" + user + "tokesss" + token);
       localStorage.setItem("token", token); // Almacena el token en el almacenamiento local
+      setUser(user); // Establece el usuario en el estado
       setLoggedIn(true);
-      setToken(token);
-      console.log(setLoggedIn);
-      console.log("Token " + token);
+      navigate("/"); // Redirigir a la página principal o la ruta deseada
     } catch (error) {
       setError("Usuario o contraseña incorrectos");
     }
   };
-
-  // Si el usuario está autenticado, redirigir a la ruta '/menu'
-  if (token) {
-    return <Navigate to="/home" />;
-  }
 
   return (
     <Container maxWidth="xs">

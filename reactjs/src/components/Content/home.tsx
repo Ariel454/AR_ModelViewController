@@ -5,7 +5,7 @@ import { Route, Routes } from "react-router-dom";
 import EditUser from "../Management/UsersAdministration/EditUser";
 import ViewUser from "../Management/UsersAdministration/ViewUser";
 import CreateUserForm from "../Management/UsersAdministration/CreateUserForm";
-import { User } from "../Layouts/ExtendedLayout";
+import { User } from "../../types/user";
 
 interface ContentProps {}
 

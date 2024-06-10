@@ -1,7 +1,18 @@
 class User {
-  constructor(id, name, codigo, cedula, email, password, direccion, puntos) {
+  constructor(
+    id,
+    name,
+    rol,
+    codigo,
+    cedula,
+    email,
+    password,
+    direccion,
+    puntos
+  ) {
     this.id = id;
     this.name = name;
+    this.rol = rol;
     this.codigo = codigo;
     this.cedula = cedula;
     this.email = email;

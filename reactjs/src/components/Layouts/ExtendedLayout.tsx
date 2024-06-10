@@ -19,29 +19,15 @@ import EditAward from "../Management/AwardsAdministration/EditAward";
 import ViewAward from "../Management/AwardsAdministration/ViewAward";
 import CreateAwardForm from "../Management/AwardsAdministration/CreateAwardForm";
 import { Award } from "../../types/award";
+import { User } from "../../types/user";
 
-interface InfoInvestments {
-  title: string;
-  info: string;
-  button: string;
+interface ExtendedLayoutProps {
+  user: User | null;
 }
 
-export interface User {
-  name: string;
-  lastname: string;
-}
-
-interface Titles {
-  titles: string[];
-}
-
-const ExtendedLayout: React.FC = () => {
+const ExtendedLayout: React.FC<ExtendedLayoutProps> = ({ user }) => {
   const [userData, setUserData] = useState<User | null>(null);
-  const [sidebarOptions, setSidebarOptions] = useState<string[]>([]);
-  const [infoInvestments, setInfoInvestments] =
-    useState<InfoInvestments | null>(null);
-  const [titles, setTitles] = useState<Titles | null>(null);
-  const [footerOptions, setFooterOptions] = useState<string[]>([]);
+
   const [users, setUsers] = useState<User[]>([]);
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [claims, setClaims] = useState<Claim[]>([]);
@@ -72,10 +58,6 @@ const ExtendedLayout: React.FC = () => {
       .then((response) => response.json())
       .then((data) => {
         setUserData(data.user);
-        setSidebarOptions(data.sidebarOptions.options);
-        setInfoInvestments(data.infoInvestments);
-        setTitles(data.title);
-        setFooterOptions(data.footer.options);
       })
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
@@ -86,7 +68,7 @@ const ExtendedLayout: React.FC = () => {
         <Navbar userData={userData} />
       </div>
       <div className="homepage-sidebar">
-        <Sidebar options={sidebarOptions} />
+        <Sidebar user={user} />
       </div>
       <div className="homepage-content">
         <Routes>

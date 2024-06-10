@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -12,24 +12,34 @@ import ViewUser from "./components/Management/UsersAdministration/ViewUser";
 import Login from "./components/Login";
 import MiniCore from "./components/MiniCore/MiniCore";
 import ExtendedLayout from "./components/Layouts/ExtendedLayout";
-
-export interface User {
-  name: string;
-  email: string;
-  lastname: string;
-}
+import { User } from "./types/user";
 
 function App() {
-  const [users, setUsers] = useState<User[]>([]);
+  const [user, setUser] = useState<User | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
 
-  const handleCreateUser = (newUser: User) => {
-    console.log("Nuevo usuario:", newUser);
-    setUsers([...users, newUser]);
-  };
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const decodedToken = JSON.parse(atob(token.split(".")[1]));
+        console.log("Decoded Token:", decodedToken); // Verifica el contenido del token en la consola
+        if (decodedToken && decodedToken.user) {
+          setUser(decodedToken.user); // Establece el estado del usuario
+          setLoggedIn(true);
+        } else {
+          console.error("El token no contiene información del usuario.");
+        }
+      } catch (error) {
+        console.error("Error al decodificar el token:", error);
+      }
+    }
+  }, []);
+
+  console.log("User:", user);
+  console.log("Logged In:", loggedIn);
 
   return (
-    // <MiniCore />
     <Router>
       <Routes>
         {!loggedIn ? (
@@ -37,12 +47,12 @@ function App() {
           <Route path="*" element={<Navigate to="/authenticate" />} />
         ) : (
           <>
-            <Route path="/*" element={<ExtendedLayout />} />
+            <Route path="/*" element={<ExtendedLayout user={user} />} />
           </>
         )}
         <Route
           path="/authenticate"
-          element={<Login setLoggedIn={setLoggedIn} />}
+          element={<Login setLoggedIn={setLoggedIn} setUser={setUser} />}
         />
       </Routes>
     </Router>
