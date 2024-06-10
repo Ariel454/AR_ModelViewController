@@ -11,7 +11,9 @@ const ViewClaim = () => {
   useEffect(() => {
     const fetchClaim = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/claims/${id}`);
+        const response = await fetch(
+          `https://ar-mvc-api.vercel.app/api/claims/${id}`
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch claim");
         }

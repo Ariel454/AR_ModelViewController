@@ -27,7 +27,7 @@ const ApproveInvoices: React.FC<ApproveInvoicesProps> = ({ setUser }) => {
     const fetchDeniedInvoices = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3000/api/invoices?estado=PENDIENTE"
+          "https://ar-mvc-api.vercel.app/api/invoices?estado=PENDIENTE"
         );
         if (!response.ok) {
           throw new Error("Failed to fetch denied invoices");
@@ -48,7 +48,7 @@ const ApproveInvoices: React.FC<ApproveInvoicesProps> = ({ setUser }) => {
   const updateInvoices = async () => {
     try {
       const response = await fetch(
-        "http://localhost:3000/api/invoices?estado=PENDIENTE"
+        "https://ar-mvc-api.vercel.app/api/invoices?estado=PENDIENTE"
       );
       if (!response.ok) {
         throw new Error("Failed to fetch denied invoices");
@@ -65,7 +65,7 @@ const ApproveInvoices: React.FC<ApproveInvoicesProps> = ({ setUser }) => {
   const handleApproveInvoice = async (invoiceId: number) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/invoices/${invoiceId}`,
+        `https://ar-mvc-api.vercel.app/api/invoices/${invoiceId}`,
         {
           method: "PUT",
           headers: {
@@ -94,7 +94,7 @@ const ApproveInvoices: React.FC<ApproveInvoicesProps> = ({ setUser }) => {
 
       // Obtener al usuario asociado a la factura
       const userResponse = await fetch(
-        `http://localhost:3000/api/users/${approvedInvoice.user_id}`
+        `https://ar-mvc-api.vercel.app/api/users/${approvedInvoice.user_id}`
       );
       const user = await userResponse.json();
       console.log("User updated" + JSON.stringify(user));
@@ -108,7 +108,7 @@ const ApproveInvoices: React.FC<ApproveInvoicesProps> = ({ setUser }) => {
 
       // Actualizar al usuario en la base de datos
       await fetch(
-        `http://localhost:3000/api/users/${approvedInvoice.user_id}`,
+        `https://ar-mvc-api.vercel.app/api/users/${approvedInvoice.user_id}`,
         {
           method: "PUT",
           headers: {
@@ -135,7 +135,7 @@ const ApproveInvoices: React.FC<ApproveInvoicesProps> = ({ setUser }) => {
   const calculateBonus = async (userId: number): Promise<number> => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/invoices/approved/${userId}`
+        `https://ar-mvc-api.vercel.app/api/invoices/approved/${userId}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch approved invoices");
@@ -181,7 +181,7 @@ const ApproveInvoices: React.FC<ApproveInvoicesProps> = ({ setUser }) => {
   const handleDenyInvoice = async (invoiceId: number) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/invoices/${invoiceId}`,
+        `https://ar-mvc-api.vercel.app/api/invoices/${invoiceId}`,
         {
           method: "PUT",
           headers: {
