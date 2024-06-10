@@ -38,10 +38,13 @@ const ViewAward = () => {
     <Grid container justifyContent="center" alignItems="center">
       <Grid item xs={12} md={6}>
         <Paper elevation={3} style={{ padding: "20px", marginBottom: "20px" }}>
-          <Typography variant="h5">Award Details</Typography>
+          <Typography variant="h5">Detalles del premio</Typography>
           <Typography variant="body1">ID: {award.id}</Typography>
           <Typography variant="body1">Código: {award.codigo}</Typography>
           <Typography variant="body1">Etiqueta: {award.etiqueta}</Typography>
+          <Typography variant="body1">
+            Descripción: {award.descripcion}
+          </Typography>
           <Typography variant="body1">Precio: {award.precio}</Typography>
           <Typography variant="body1">Puntos: {award.puntos}</Typography>
         </Paper>

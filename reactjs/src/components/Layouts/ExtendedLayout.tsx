@@ -20,12 +20,15 @@ import ViewAward from "../Management/AwardsAdministration/ViewAward";
 import CreateAwardForm from "../Management/AwardsAdministration/CreateAwardForm";
 import { Award } from "../../types/award";
 import { User } from "../../types/user";
+import ApproveInvoices from "../Management/InvoicesAdministration/ApproveInvoices";
+import Store from "../Management/StoreAwards/store";
 
 interface ExtendedLayoutProps {
   user: User | null;
+  setUser: (data: any) => void;
 }
 
-const ExtendedLayout: React.FC<ExtendedLayoutProps> = ({ user }) => {
+const ExtendedLayout: React.FC<ExtendedLayoutProps> = ({ user, setUser }) => {
   const [userData, setUserData] = useState<User | null>(null);
 
   const [users, setUsers] = useState<User[]>([]);
@@ -34,22 +37,18 @@ const ExtendedLayout: React.FC<ExtendedLayoutProps> = ({ user }) => {
   const [awards, setAwards] = useState<Award[]>([]);
 
   const handleCreateUser = (newUser: User) => {
-    console.log("Nuevo usuario:", newUser);
     setUsers([...users, newUser]);
   };
 
   const handleCreateInvoice = (newInvoice: Invoice) => {
-    console.log("Nuevo usuario:", newInvoice);
     setInvoices([...invoices, newInvoice]);
   };
 
   const handleCreateClaim = (newClaim: Claim) => {
-    console.log("Nuevo usuario:", newClaim);
     setClaims([...claims, newClaim]);
   };
 
   const handleCreateAward = (newAward: Award) => {
-    console.log("Nuevo usuario:", newAward);
     setAwards([...awards, newAward]);
   };
 
@@ -87,6 +86,14 @@ const ExtendedLayout: React.FC<ExtendedLayoutProps> = ({ user }) => {
           <Route
             path="subir-factura"
             element={<FacturaForm onCreate={handleCreateInvoice} user={user} />}
+          />
+          <Route
+            path="aprobar-facturas"
+            element={<ApproveInvoices setUser={setUser} />}
+          />
+          <Route
+            path="reclamar-premios"
+            element={<Store user={user} setUser={setUser} />}
           />
           <Route
             path="gestion-reclamos"

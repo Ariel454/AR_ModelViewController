@@ -24,10 +24,8 @@ function App() {
     if (token) {
       try {
         const decodedToken = JSON.parse(atob(token.split(".")[1]));
-        console.log("Decoded Token:", decodedToken); // Verifica el contenido del token en la consola
         if (decodedToken && decodedToken.user) {
           setUser(decodedToken.user); // Establece el estado del usuario
-          console.log(decodedToken.user + "dasdsa");
           setLoggedIn(true);
         } else {
           console.error("El token no contiene información del usuario.");
@@ -38,8 +36,7 @@ function App() {
     }
   }, []);
 
-  console.log("User:", user);
-  console.log("Logged In:", loggedIn);
+  console.log(user);
 
   return (
     <Router>
@@ -49,7 +46,10 @@ function App() {
           <Route path="*" element={<Navigate to="/authenticate" />} />
         ) : (
           <>
-            <Route path="/*" element={<ExtendedLayout user={user} />} />
+            <Route
+              path="/*"
+              element={<ExtendedLayout user={user} setUser={setUser} />}
+            />
           </>
         )}
         <Route

@@ -116,8 +116,6 @@ function computeGrades(periods) {
   let finalGrades = {};
 
   periods.forEach((period) => {
-    console.log("Period:", period.dateA, "-", period.dateB); // Imprimir el rango de fechas del periodo
-
     notes_db.forEach((note) => {
       if (note.date >= period.dateA && note.date <= period.dateB) {
         if (!finalGrades[note.student_id]) {

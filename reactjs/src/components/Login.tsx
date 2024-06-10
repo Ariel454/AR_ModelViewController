@@ -22,10 +22,8 @@ const Login: React.FC<Props> = ({ setLoggedIn, setUser, user }) => {
       // Si hay un token guardado
       try {
         const decodedToken = JSON.parse(atob(savedToken.split(".")[1]));
-        console.log("Decoded Token:", decodedToken); // Verifica el contenido del token en la consola
         if (decodedToken && decodedToken.user) {
           setUser(decodedToken.user); // Establece el usuario en el estado
-          console.log("UYsuari" + user);
           setLoggedIn(true);
           navigate("/"); // Redirigir a la página principal o la ruta deseada
         } else {
@@ -40,7 +38,7 @@ const Login: React.FC<Props> = ({ setLoggedIn, setUser, user }) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await fetch("https://ar-mvc-api.vercel.app/api/login", {
+      const response = await fetch("http://localhost:3000/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -52,7 +50,6 @@ const Login: React.FC<Props> = ({ setLoggedIn, setUser, user }) => {
       }
       const data = await response.json();
       const { token, user } = data;
-      console.log("user 2213" + user + "tokesss" + token);
       localStorage.setItem("token", token); // Almacena el token en el almacenamiento local
       setUser(user); // Establece el usuario en el estado
       setLoggedIn(true);

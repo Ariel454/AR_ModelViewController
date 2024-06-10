@@ -27,7 +27,6 @@ exports.getClaimById = (req, res) => {
 };
 
 exports.createClaim = (req, res) => {
-  console.log("Solicitud para crear un nuevo reclamo recibida");
   const { user_id, award_id } = req.body;
 
   // Generar el nuevo ID automáticamente

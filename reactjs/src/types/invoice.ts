@@ -7,8 +7,8 @@ export interface Invoice {
   estado: Status;
 }
 
-enum Status {
-  ACTIVO = "ACTIVO",
+export enum Status {
+  APROBADO = "APROBADO",
   PENDIENTE = "PENDIENTE",
   DENEGADO = "DENEGADO",
 }

@@ -13,7 +13,6 @@ const Content: React.FC<ContentProps> = ({}) => {
   const [users, setUsers] = useState<User[]>([]);
 
   const handleCreateUser = (newUser: User) => {
-    console.log("Nuevo usuario:", newUser);
     setUsers([...users, newUser]);
   };
 

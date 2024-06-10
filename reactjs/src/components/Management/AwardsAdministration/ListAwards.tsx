@@ -62,6 +62,7 @@ const ListAwards = () => {
             <TableCell>ID</TableCell>
             <TableCell>Código</TableCell>
             <TableCell>Etiqueta</TableCell>
+            <TableCell>Descripción</TableCell>
             <TableCell>Precio</TableCell>
             <TableCell>Puntos</TableCell>
             <TableCell>Actions</TableCell>
@@ -78,6 +79,7 @@ const ListAwards = () => {
                 <TableCell>{award.id}</TableCell>
                 <TableCell>{award.codigo}</TableCell>
                 <TableCell>{award.etiqueta}</TableCell>
+                <TableCell>{award.descripcion}</TableCell>
                 <TableCell>{award.precio}</TableCell>
                 <TableCell>{award.puntos}</TableCell>
                 <TableCell>

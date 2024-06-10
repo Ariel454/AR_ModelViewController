@@ -64,6 +64,7 @@ const ListInvoices = () => {
             <TableCell>User ID</TableCell>
             <TableCell>Fecha</TableCell>
             <TableCell>Precio</TableCell>
+            <TableCell>Estado</TableCell>
             <TableCell>Actions</TableCell>
           </TableRow>
         </TableHead>
@@ -80,6 +81,7 @@ const ListInvoices = () => {
                 <TableCell>{invoice.user_id}</TableCell>
                 <TableCell>{invoice.fecha}</TableCell>
                 <TableCell>{invoice.precio}</TableCell>
+                <TableCell>{invoice.estado}</TableCell>
                 <TableCell>
                   <Button
                     component={Link}

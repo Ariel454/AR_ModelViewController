@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { TextField, Button, Grid, Typography } from "@mui/material";
+import { TextField, Button, Grid, Typography, MenuItem } from "@mui/material";
 import { useParams } from "react-router-dom";
 
 interface EditInvoiceProps {}
@@ -10,6 +10,7 @@ const EditInvoice: React.FC<EditInvoiceProps> = ({}) => {
   const [userId, setUserId] = useState<string>("");
   const [fecha, setFecha] = useState<string>("");
   const [precio, setPrecio] = useState<string>("");
+  const [estado, setEstado] = useState<string>("");
   const [message, setMessage] = useState<string>("");
 
   useEffect(() => {
@@ -28,7 +29,7 @@ const EditInvoice: React.FC<EditInvoiceProps> = ({}) => {
         const formattedDate = date.toISOString().split("T")[0];
         setFecha(formattedDate);
         setPrecio(invoice.precio.toString());
-        console.log("Fecha" + fecha);
+        setEstado(invoice.estado); // Establecer el estado de la factura
       } catch (error) {
         console.error("Error fetching invoice:", error);
       }
@@ -51,6 +52,7 @@ const EditInvoice: React.FC<EditInvoiceProps> = ({}) => {
           user_id: parseInt(userId, 10),
           fecha,
           precio: parseFloat(precio),
+          estado,
         }),
       });
 
@@ -108,6 +110,20 @@ const EditInvoice: React.FC<EditInvoiceProps> = ({}) => {
             value={precio}
             onChange={(e) => setPrecio(e.target.value)}
           />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            select
+            label="Estado"
+            variant="outlined"
+            fullWidth
+            value={estado}
+            onChange={(e) => setEstado(e.target.value)}
+          >
+            <MenuItem value="APROBADO">Aprobado</MenuItem>
+            <MenuItem value="PENDIENTE">Pendiente</MenuItem>
+            <MenuItem value="DENEGADO">Denegado</MenuItem>
+          </TextField>
         </Grid>
         <Grid item xs={12}>
           <Button variant="contained" color="primary" type="submit">

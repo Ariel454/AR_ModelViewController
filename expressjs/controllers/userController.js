@@ -56,7 +56,6 @@ exports.getUserById = (req, res) => {
 };
 
 exports.createUser = (req, res) => {
-  console.log("Solicitud para crear un nuevo usuario recibida");
   const { name, email, password } = req.body;
   const newUser = new User(Date.now(), name, email, password);
   users.push(newUser);
@@ -65,11 +64,15 @@ exports.createUser = (req, res) => {
 
 exports.updateUser = (req, res) => {
   const userId = parseInt(req.params.id);
-  const { name, email } = req.body;
+  const { name, email, puntos } = req.body;
   const userIndex = users.findIndex((user) => user.id === userId);
   if (userIndex !== -1) {
-    users[userIndex].name = name;
-    users[userIndex].email = email;
+    if (puntos !== undefined) {
+      users[userIndex].puntos = puntos;
+    } else {
+      users[userIndex].name = name;
+      users[userIndex].email = email;
+    }
     res.json(users[userIndex]);
   } else {
     res.status(404).json({ message: "Usuario no encontrado" });
@@ -104,5 +107,4 @@ exports.login = (req, res) => {
   });
   // Incluir el usuario en la respuesta
   res.json({ token, user });
-  console.log(user);
 };

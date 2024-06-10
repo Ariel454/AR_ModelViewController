@@ -24,6 +24,10 @@ router.get("/invoices", invoiceController.getInvoices); // Obtener todas las fac
 router.get("/invoices/:id", invoiceController.getInvoiceById); // Obtener una factura por su ID
 router.post("/invoices", invoiceController.createInvoice); // Crear una nueva factura
 router.put("/invoices/:id", invoiceController.updateInvoice); // Actualizar una factura por su ID
+router.get(
+  "/invoices/approved/:userId",
+  invoiceController.getApprovedInvoicesByUserId
+);
 router.delete("/invoices/:id", invoiceController.deleteInvoice); // Eliminar una factura por su ID
 
 // Rutas para reclamos (claims)

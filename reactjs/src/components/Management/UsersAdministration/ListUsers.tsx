@@ -54,8 +54,6 @@ const ListUsers = () => {
     }
   };
 
-  console.log(users[0]);
-
   return (
     <TableContainer component={Paper}>
       <Table aria-label="list of users">
@@ -69,6 +67,7 @@ const ListUsers = () => {
             <TableCell>Email</TableCell>
             <TableCell>Contrasena</TableCell>
             <TableCell>Dirección</TableCell>
+            <TableCell>Puntos</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -87,6 +86,7 @@ const ListUsers = () => {
                 <TableCell>{user.email}</TableCell>
                 <TableCell>{user.password}</TableCell>
                 <TableCell>{user.direccion}</TableCell>
+                <TableCell>{user.puntos}</TableCell>
                 <TableCell>
                   <Button
                     component={Link}

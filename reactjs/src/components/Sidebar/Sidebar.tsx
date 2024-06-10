@@ -18,16 +18,23 @@ const Sidebar: React.FC<SidebarProps> = ({ user }) => {
           { path: "/gestion-usuarios", label: "Gestión de Usuarios" },
           { path: "/subir-factura", label: "Subir Factura" },
           { path: "/gestion-facturas", label: "Gestión de Facturas" },
+          { path: "/aprobar-facturas", label: "Aprobar Facturas" },
           { path: "/gestion-reclamos", label: "Gestión de Reclamos" },
           { path: "/gestion-premios", label: "Gestión de Premios" },
+          { path: "/reclamar-premios", label: "Reclamar Premios" },
         ];
       case "COM":
         return [
           { path: "/gestion-facturas", label: "Gestión de Facturas" },
+          { path: "/aprobar-facturas", label: "Aprobar Facturas" },
           { path: "/gestion-premios", label: "Gestión de Premios" },
         ];
       case "CLI":
-        return [{ path: "/subir-factura", label: "Subir Factura" }];
+        return [
+          { path: "/subir-factura", label: "Subir Factura" },
+          { path: "/reclamar-premios", label: "Reclamar Premios" },
+        ];
+
       default:
         return [];
     }

@@ -31,6 +31,7 @@ const CreateInvoiceForm: React.FC<CreateInvoiceFormProps> = ({ onCreate }) => {
           user_id: parseInt(userId, 10),
           fecha,
           precio: parseFloat(precio),
+          estado: "PENDIENTE",
         }),
       });
 

@@ -8,6 +8,7 @@ const EditAward: React.FC<EditAwardProps> = ({}) => {
   const { id } = useParams<{ id: string }>();
   const [codigo, setCodigo] = useState<string>("");
   const [etiqueta, setEtiqueta] = useState<string>("");
+  const [descripcion, setDescripcion] = useState<string>("");
   const [precio, setPrecio] = useState<string>("");
   const [puntos, setPuntos] = useState<string>("");
   const [message, setMessage] = useState<string>("");
@@ -22,6 +23,7 @@ const EditAward: React.FC<EditAwardProps> = ({}) => {
         const award = await response.json();
         setCodigo(award.codigo);
         setEtiqueta(award.etiqueta);
+        setDescripcion(award.descripcion);
         setPrecio(award.precio.toString());
         setPuntos(award.puntos.toString());
       } catch (error) {
@@ -79,6 +81,15 @@ const EditAward: React.FC<EditAwardProps> = ({}) => {
             fullWidth
             value={etiqueta}
             onChange={(e) => setEtiqueta(e.target.value)}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            label="Descripción"
+            variant="outlined"
+            fullWidth
+            value={descripcion}
+            onChange={(e) => setDescripcion(e.target.value)}
           />
         </Grid>
         <Grid item xs={12} sm={6}>

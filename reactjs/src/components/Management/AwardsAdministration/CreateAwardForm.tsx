@@ -11,14 +11,17 @@ interface CreateAwardFormProps {
 const CreateAwardForm: React.FC<CreateAwardFormProps> = ({ onCreate }) => {
   const [codigo, setCodigo] = useState<string>("");
   const [etiqueta, setEtiqueta] = useState<string>("");
+  const [descripcion, setDescripcion] = useState<string>("");
   const [precio, setPrecio] = useState<string>("");
-  const [puntos, setPuntos] = useState<string>("");
   const [message, setMessage] = useState<string>("");
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     try {
+      // Calcula los puntos necesarios para el premio según el precio
+      const puntos = Math.ceil(parseFloat(precio) / 0.8);
+
       const response = await fetch("http://localhost:3000/api/awards", {
         method: "POST",
         headers: {
@@ -27,8 +30,9 @@ const CreateAwardForm: React.FC<CreateAwardFormProps> = ({ onCreate }) => {
         body: JSON.stringify({
           codigo,
           etiqueta,
+          descripcion,
           precio: parseFloat(precio),
-          puntos: parseInt(puntos, 10),
+          puntos, // Utiliza los puntos calculados
         }),
       });
 
@@ -40,8 +44,8 @@ const CreateAwardForm: React.FC<CreateAwardFormProps> = ({ onCreate }) => {
       onCreate(newAward);
       setCodigo("");
       setEtiqueta("");
+      setDescripcion("");
       setPrecio("");
-      setPuntos("");
       setMessage("Premio creado exitosamente");
     } catch (error) {
       console.error("Error:", error);
@@ -73,22 +77,21 @@ const CreateAwardForm: React.FC<CreateAwardFormProps> = ({ onCreate }) => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
+              label="Descripción"
+              variant="outlined"
+              fullWidth
+              value={descripcion}
+              onChange={(e) => setDescripcion(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
               label="Precio"
               variant="outlined"
               fullWidth
               type="number"
               value={precio}
               onChange={(e) => setPrecio(e.target.value)}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label="Puntos"
-              variant="outlined"
-              fullWidth
-              type="number"
-              value={puntos}
-              onChange={(e) => setPuntos(e.target.value)}
             />
           </Grid>
           <Grid item xs={12}>
