@@ -6,9 +6,9 @@ const secretKey = "tu_secreto";
 let nextInvoiceId = 4; // Empieza en 4 ya que tienes 3 facturas predefinidas
 
 const predefinedInvoices = [
-  new Invoice(1, "F001", 1, new Date(), 150.0),
-  new Invoice(2, "F002", 1, new Date(), 200.0),
-  new Invoice(3, "F003", 2, new Date(), 250.0),
+  new Invoice(1, "F001", 1, new Date(), 150.0, "PENDIENTE"),
+  new Invoice(2, "F002", 1, new Date(), 200.0, "APROBAD0"),
+  new Invoice(3, "F003", 2, new Date(), 250.0, "DENEGAD0"),
 ];
 
 let invoices = [...predefinedInvoices];
@@ -29,7 +29,7 @@ exports.getInvoiceById = (req, res) => {
 
 exports.createInvoice = (req, res) => {
   console.log("Solicitud para crear una nueva factura recibida");
-  const { codigo, user_id, fecha, precio } = req.body;
+  const { codigo, user_id, fecha, precio, estado } = req.body;
 
   // Generar el nuevo ID automáticamente
   const newInvoice = new Invoice(
@@ -37,7 +37,8 @@ exports.createInvoice = (req, res) => {
     codigo,
     user_id,
     new Date(fecha),
-    precio
+    precio,
+    estado
   );
 
   invoices.push(newInvoice);
@@ -54,6 +55,7 @@ exports.updateInvoice = (req, res) => {
     invoices[invoiceIndex].codigo = codigo;
     invoices[invoiceIndex].fecha = new Date(fecha);
     invoices[invoiceIndex].precio = precio;
+    invoices[invoiceIndex].estado = estado;
     res.json(invoices[invoiceIndex]);
   } else {
     res.status(404).json({ message: "Factura no encontrada" });

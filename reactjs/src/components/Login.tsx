@@ -6,9 +6,10 @@ import { User } from "../types/user";
 interface Props {
   setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  user: User | null;
 }
 
-const Login: React.FC<Props> = ({ setLoggedIn, setUser }) => {
+const Login: React.FC<Props> = ({ setLoggedIn, setUser, user }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -18,11 +19,23 @@ const Login: React.FC<Props> = ({ setLoggedIn, setUser }) => {
     // Al montar el componente, revisa si hay un token en el localStorage
     const savedToken = localStorage.getItem("token");
     if (savedToken) {
-      console.log("save" + savedToken);
-      setLoggedIn(true);
-      navigate("/"); // Redirigir a la página principal o la ruta deseada
+      // Si hay un token guardado
+      try {
+        const decodedToken = JSON.parse(atob(savedToken.split(".")[1]));
+        console.log("Decoded Token:", decodedToken); // Verifica el contenido del token en la consola
+        if (decodedToken && decodedToken.user) {
+          setUser(decodedToken.user); // Establece el usuario en el estado
+          console.log("UYsuari" + user);
+          setLoggedIn(true);
+          navigate("/"); // Redirigir a la página principal o la ruta deseada
+        } else {
+          console.error("El token no contiene información del usuario.");
+        }
+      } catch (error) {
+        console.error("Error al decodificar el token:", error);
+      }
     }
-  }, [setLoggedIn, navigate]);
+  }, [setUser, setLoggedIn, navigate]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

@@ -1,72 +1,109 @@
 import React, { useState } from "react";
+import { TextField, Button, Grid, Typography } from "@mui/material";
 
-const FacturaForm: React.FC = () => {
-  const [codigoProducto, setCodigoProducto] = useState("");
-  const [fecha, setFecha] = useState("");
-  const [descripcion, setDescripcion] = useState("");
-  const [valorTotal, setValorTotal] = useState<number>(0);
-  const [puntos, setPuntos] = useState<number | null>(null);
+import { Invoice } from "../../types/invoice";
+import { User } from "../../types/user";
 
-  const factorConversion = 0.05;
-  const bonificacionFrecuencia = 0.003; // 0.3% increment per purchase per week
+interface InvoiceFormProps {
+  user: User | null;
+  onCreate: (invoiceData: Invoice) => void; // Agregar onCreate como una prop
+}
 
-  const handleIngresarFactura = () => {
-    // Supongamos que esta es la cantidad de compras en una semana (este valor debería ser obtenido dinámicamente)
-    const comprasSemanales = 3;
+const InvoiceForm: React.FC<InvoiceFormProps> = ({ user, onCreate }) => {
+  const [codigo, setCodigo] = useState<string>("");
+  const [fecha, setFecha] = useState<string>("");
+  const [precio, setPrecio] = useState<string>("");
+  const [message, setMessage] = useState<string>("");
 
-    // Cálculo de puntos
-    const puntosObtenidos =
-      valorTotal *
-      (factorConversion + bonificacionFrecuencia * comprasSemanales);
-    setPuntos(puntosObtenidos);
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    try {
+      const response = await fetch("http://localhost:3000/api/invoices", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          codigo,
+          user_id: user?.id,
+          fecha,
+          precio: parseFloat(precio),
+          estado: "PENDIENTE",
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Error al crear factura");
+      }
+
+      const newInvoice = await response.json();
+      onCreate(newInvoice);
+      setCodigo("");
+      setFecha("");
+      setPrecio("");
+      setMessage("Factura creada exitosamente");
+    } catch (error) {
+      console.error("Error:", error);
+      setMessage("Error al crear factura");
+    }
   };
 
   return (
     <div>
-      <form>
-        <div>
-          <label>Código Producto:</label>
-          <input
-            type="text"
-            value={codigoProducto}
-            onChange={(e) => setCodigoProducto(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Fecha:</label>
-          <input
-            type="date"
-            value={fecha}
-            onChange={(e) => setFecha(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Descripción:</label>
-          <input
-            type="text"
-            value={descripcion}
-            onChange={(e) => setDescripcion(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Valor Total:</label>
-          <input
-            type="number"
-            value={valorTotal}
-            onChange={(e) => setValorTotal(parseFloat(e.target.value))}
-          />
-        </div>
-        <button type="button" onClick={handleIngresarFactura}>
-          Ingresar Factura
-        </button>
+      <form onSubmit={handleSubmit}>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <TextField
+              label="Código Producto"
+              variant="outlined"
+              fullWidth
+              value={codigo}
+              onChange={(e) => setCodigo(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              label="Fecha"
+              variant="outlined"
+              fullWidth
+              type="date"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              value={fecha}
+              onChange={(e) => setFecha(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              label="Precio"
+              variant="outlined"
+              fullWidth
+              type="number"
+              value={precio}
+              onChange={(e) => setPrecio(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Button variant="contained" color="primary" type="submit">
+              Crear Factura
+            </Button>
+          </Grid>
+          {message && (
+            <Grid item xs={12}>
+              <Typography
+                variant="body1"
+                color={message.startsWith("Error") ? "error" : "success"}
+              >
+                {message}
+              </Typography>
+            </Grid>
+          )}
+        </Grid>
       </form>
-      {puntos !== null && (
-        <div>
-          <h3>Puntos Obtenidos: {puntos.toFixed(2)}</h3>
-        </div>
-      )}
     </div>
   );
 };
 
-export default FacturaForm;
+export default InvoiceForm;

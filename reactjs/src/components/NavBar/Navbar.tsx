@@ -46,12 +46,12 @@ const Navbar: React.FC<Props> = ({ userData }) => {
         {userData && (
           <Box className="user-info" display="flex" alignItems="center">
             <Avatar className="user-avatar">
-              {getInitials(`${userData.name} ${userData.name}`)}
+              {getInitials(`${userData.name} `)}
             </Avatar>
             <Typography
               className="user-name"
               variant="body1"
-            >{`${userData.name} ${userData.name}`}</Typography>
+            >{`${userData.name}`}</Typography>
             <div className="divider vertical" />
             <Button className="logout-button" onClick={handleLogout}>
               Salir

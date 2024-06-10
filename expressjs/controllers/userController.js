@@ -99,7 +99,9 @@ exports.login = (req, res) => {
     return res.status(401).json({ message: "Contraseña incorrecta" });
   }
   // Si las credenciales son válidas, generar un token de sesión
-  const token = jwt.sign({ userId: user.id }, secretKey, { expiresIn: "1h" });
+  const token = jwt.sign({ user: user }, secretKey, {
+    expiresIn: "1h",
+  });
   // Incluir el usuario en la respuesta
   res.json({ token, user });
   console.log(user);

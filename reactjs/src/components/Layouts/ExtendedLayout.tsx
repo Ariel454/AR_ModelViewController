@@ -65,7 +65,7 @@ const ExtendedLayout: React.FC<ExtendedLayoutProps> = ({ user }) => {
   return (
     <div className="homepage-container">
       <div className="homepage-navbar">
-        <Navbar userData={userData} />
+        <Navbar userData={user} />
       </div>
       <div className="homepage-sidebar">
         <Sidebar user={user} />
@@ -84,7 +84,10 @@ const ExtendedLayout: React.FC<ExtendedLayoutProps> = ({ user }) => {
           />
           <Route path="edit-invoice/:id" element={<EditInvoice />} />
           <Route path="view-invoice/:id" element={<ViewInvoice />} />
-          <Route path="subir-factura" element={<FacturaForm />} />
+          <Route
+            path="subir-factura"
+            element={<FacturaForm onCreate={handleCreateInvoice} user={user} />}
+          />
           <Route
             path="gestion-reclamos"
             element={<CreateClaimForm onCreate={handleCreateClaim} />}
@@ -97,7 +100,6 @@ const ExtendedLayout: React.FC<ExtendedLayoutProps> = ({ user }) => {
           />
           <Route path="edit-award/:id" element={<EditAward />} />
           <Route path="view-award/:id" element={<ViewAward />} />
-          <Route path="subir-factura" element={<FacturaForm />} />
         </Routes>
       </div>
     </div>

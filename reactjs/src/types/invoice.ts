@@ -4,4 +4,11 @@ export interface Invoice {
   user_id: number;
   fecha: string;
   precio: number;
+  estado: Status;
+}
+
+enum Status {
+  ACTIVO = "ACTIVO",
+  PENDIENTE = "PENDIENTE",
+  DENEGADO = "DENEGADO",
 }

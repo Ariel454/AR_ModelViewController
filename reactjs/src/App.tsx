@@ -20,12 +20,14 @@ function App() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+
     if (token) {
       try {
         const decodedToken = JSON.parse(atob(token.split(".")[1]));
         console.log("Decoded Token:", decodedToken); // Verifica el contenido del token en la consola
         if (decodedToken && decodedToken.user) {
           setUser(decodedToken.user); // Establece el estado del usuario
+          console.log(decodedToken.user + "dasdsa");
           setLoggedIn(true);
         } else {
           console.error("El token no contiene información del usuario.");
@@ -52,7 +54,9 @@ function App() {
         )}
         <Route
           path="/authenticate"
-          element={<Login setLoggedIn={setLoggedIn} setUser={setUser} />}
+          element={
+            <Login user={user} setLoggedIn={setLoggedIn} setUser={setUser} />
+          }
         />
       </Routes>
     </Router>
