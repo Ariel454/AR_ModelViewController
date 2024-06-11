@@ -19,9 +19,8 @@ const ListAwards = () => {
   useEffect(() => {
     const fetchAwards = async () => {
       try {
-        const response = await fetch(
-          "https://ar-mvc-api.vercel.app/api/awards"
-        );
+        const response = await fetch("
+https://ar-mvc-api.vercel.app/api/awards");
         if (!response.ok) {
           throw new Error("Failed to fetch awards");
         }
@@ -40,7 +39,8 @@ const ListAwards = () => {
   const handleDeleteAward = async (awardId: number) => {
     try {
       const response = await fetch(
-        `https://ar-mvc-api.vercel.app/api/awards/${awardId}`,
+        `
+https://ar-mvc-api.vercel.app/api/awards/${awardId}`,
         {
           method: "DELETE",
         }

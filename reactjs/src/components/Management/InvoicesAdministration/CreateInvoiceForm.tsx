@@ -20,23 +20,21 @@ const CreateInvoiceForm: React.FC<CreateInvoiceFormProps> = ({ onCreate }) => {
     event.preventDefault();
 
     try {
-      const response = await fetch(
-        "https://ar-mvc-api.vercel.app/api/invoices",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            recibo,
-            codigo,
-            user_id: parseInt(userId, 10),
-            fecha,
-            precio: parseFloat(precio),
-            estado: "PENDIENTE",
-          }),
-        }
-      );
+      const response = await fetch("
+https://ar-mvc-api.vercel.app/api/invoices", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          recibo,
+          codigo,
+          user_id: parseInt(userId, 10),
+          fecha,
+          precio: parseFloat(precio),
+          estado: "PENDIENTE",
+        }),
+      });
 
       if (!response.ok) {
         throw new Error("Error al crear factura");

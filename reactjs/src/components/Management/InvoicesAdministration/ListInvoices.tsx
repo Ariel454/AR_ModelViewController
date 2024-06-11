@@ -19,9 +19,8 @@ const ListInvoices = () => {
   useEffect(() => {
     const fetchInvoices = async () => {
       try {
-        const response = await fetch(
-          "https://ar-mvc-api.vercel.app/api/invoices"
-        );
+        const response = await fetch("
+https://ar-mvc-api.vercel.app/api/invoices");
         if (!response.ok) {
           throw new Error("Failed to fetch invoices");
         }
@@ -40,7 +39,8 @@ const ListInvoices = () => {
   const handleDeleteInvoice = async (invoiceId: number) => {
     try {
       const response = await fetch(
-        `https://ar-mvc-api.vercel.app/api/invoices/${invoiceId}`,
+        `
+https://ar-mvc-api.vercel.app/api/invoices/${invoiceId}`,
         {
           method: "DELETE",
         }

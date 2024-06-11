@@ -32,7 +32,8 @@ const CreateUserForm: React.FC<CreateUserFormProps> = ({ onCreate }) => {
     event.preventDefault();
 
     try {
-      const response = await fetch("https://ar-mvc-api.vercel.app/api/users", {
+      const response = await fetch("
+https://ar-mvc-api.vercel.app/api/users", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

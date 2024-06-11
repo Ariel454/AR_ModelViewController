@@ -12,7 +12,8 @@ const ViewInvoice = () => {
     const fetchInvoice = async () => {
       try {
         const response = await fetch(
-          `https://ar-mvc-api.vercel.app/api/invoices/${id}`
+          `
+https://ar-mvc-api.vercel.app/api/invoices/${id}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch invoice");

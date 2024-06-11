@@ -21,9 +21,8 @@ const ViewUser = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(
-          `https://ar-mvc-api.vercel.app/api/users/${id}`
-        );
+        const response = await fetch(`
+https://ar-mvc-api.vercel.app/api/users/${id}`);
         if (!response.ok) {
           throw new Error("Failed to fetch user");
         }

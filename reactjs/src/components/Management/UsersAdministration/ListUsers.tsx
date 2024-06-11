@@ -19,7 +19,8 @@ const ListUsers = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch("https://ar-mvc-api.vercel.app/api/users");
+        const response = await fetch("
+https://ar-mvc-api.vercel.app/api/users");
         if (!response.ok) {
           throw new Error("Failed to fetch users");
         }
@@ -38,7 +39,8 @@ const ListUsers = () => {
   const handleDeleteUser = async (userId: number) => {
     try {
       const response = await fetch(
-        `https://ar-mvc-api.vercel.app/api/users/${userId}`,
+        `
+https://ar-mvc-api.vercel.app/api/users/${userId}`,
         {
           method: "DELETE",
         }

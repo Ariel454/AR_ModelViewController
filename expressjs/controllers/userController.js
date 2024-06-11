@@ -7,34 +7,111 @@ const predefinedUsers = [
     1,
     "Ariel Raura",
     "ADM",
-    "codigo1",
-    "1234567890",
+    "A0001",
+    "1726605007",
     "ariel@gmail.com",
     "ariel123",
-    "Dirección1",
+    "Quito",
     100
   ),
   new User(
     2,
-    "Usuario2",
+    "Juan Lopez",
     "COM",
-    "codigo2",
-    "0987654321",
-    "usuario2@example.com",
-    "password2",
-    "Dirección2",
+    "A0002",
+    "1726645007",
+    "juan@gmail.com",
+    "juan123",
+    "Guayaquil",
     50
   ),
   new User(
     3,
-    "Usuario3",
+    "David Diaz",
     "CLI",
-    "codigo3",
-    "1357924680",
-    "usuario3@example.com",
-    "password3",
-    "Dirección3",
+    "A0003",
+    "1987924680",
+    "david@gmail.com",
+    "david123",
+    "Loja",
     75
+  ),
+  new User(
+    4,
+    "Maria Gonzalez",
+    "CLI",
+    "A0004",
+    "1800987654",
+    "maria@gmail.com",
+    "maria123",
+    "Cuenca",
+    60
+  ),
+  new User(
+    5,
+    "Carlos Perez",
+    "ADM",
+    "A0005",
+    "1745678901",
+    "carlos@gmail.com",
+    "carlos123",
+    "Ambato",
+    90
+  ),
+  new User(
+    6,
+    "Ana Morales",
+    "CLI",
+    "A0006",
+    "1987456123",
+    "ana@gmail.com",
+    "ana123",
+    "Manta",
+    70
+  ),
+  new User(
+    7,
+    "Luis Torres",
+    "COM",
+    "A0007",
+    "1800234567",
+    "luis@gmail.com",
+    "luis123",
+    "Riobamba",
+    40
+  ),
+  new User(
+    8,
+    "Sofia Ramirez",
+    "CLI",
+    "A0008",
+    "1923456789",
+    "sofia@gmail.com",
+    "sofia123",
+    "Esmeraldas",
+    55
+  ),
+  new User(
+    9,
+    "Miguel Castillo",
+    "ADM",
+    "A0009",
+    "1908765432",
+    "miguel@gmail.com",
+    "miguel123",
+    "Santo Domingo",
+    85
+  ),
+  new User(
+    10,
+    "Elena Vargas",
+    "CLI",
+    "A0010",
+    "1986543210",
+    "elena@gmail.com",
+    "elena123",
+    "Ibarra",
+    65
   ),
 ];
 
@@ -55,24 +132,41 @@ exports.getUserById = (req, res) => {
   }
 };
 
+let nextUserId = 11; // Comienza en 11 ya que tenemos 10 usuarios predefinidos
+
 exports.createUser = (req, res) => {
-  const { name, email, password } = req.body;
-  const newUser = new User(Date.now(), name, email, password);
+  const { name, rol, codigo, cedula, email, password, direccion, puntos } =
+    req.body;
+  const newUser = new User(
+    nextUserId++,
+    name,
+    rol,
+    codigo,
+    cedula,
+    email,
+    password,
+    direccion,
+    puntos
+  );
   users.push(newUser);
   res.status(201).json(newUser);
 };
 
 exports.updateUser = (req, res) => {
   const userId = parseInt(req.params.id);
-  const { name, email, puntos } = req.body;
+  const { name, rol, codigo, cedula, email, password, direccion, puntos } =
+    req.body;
   const userIndex = users.findIndex((user) => user.id === userId);
   if (userIndex !== -1) {
-    if (puntos !== undefined) {
-      users[userIndex].puntos = puntos;
-    } else {
-      users[userIndex].name = name;
-      users[userIndex].email = email;
-    }
+    if (name !== undefined) users[userIndex].name = name;
+    if (rol !== undefined) users[userIndex].rol = rol;
+    if (codigo !== undefined) users[userIndex].codigo = codigo;
+    if (cedula !== undefined) users[userIndex].cedula = cedula;
+    if (email !== undefined) users[userIndex].email = email;
+    if (password !== undefined) users[userIndex].password = password;
+    if (direccion !== undefined) users[userIndex].direccion = direccion;
+    if (puntos !== undefined) users[userIndex].puntos = puntos;
+
     res.json(users[userIndex]);
   } else {
     res.status(404).json({ message: "Usuario no encontrado" });

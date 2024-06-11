@@ -38,7 +38,8 @@ const Login: React.FC<Props> = ({ setLoggedIn, setUser, user }) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await fetch("https://ar-mvc-api.vercel.app/api/login", {
+      const response = await fetch("
+https://ar-mvc-api.vercel.app/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

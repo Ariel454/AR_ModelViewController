@@ -16,9 +16,8 @@ const EditAward: React.FC<EditAwardProps> = ({}) => {
   useEffect(() => {
     const fetchAward = async () => {
       try {
-        const response = await fetch(
-          `https://ar-mvc-api.vercel.app/api/awards/${id}`
-        );
+        const response = await fetch(`
+https://ar-mvc-api.vercel.app/api/awards/${id}`);
         if (!response.ok) {
           throw new Error("Failed to fetch award");
         }
@@ -41,7 +40,8 @@ const EditAward: React.FC<EditAwardProps> = ({}) => {
 
     try {
       const response = await fetch(
-        `https://ar-mvc-api.vercel.app/api/awards/${id}`,
+        `
+https://ar-mvc-api.vercel.app/api/awards/${id}`,
         {
           method: "PUT",
           headers: {

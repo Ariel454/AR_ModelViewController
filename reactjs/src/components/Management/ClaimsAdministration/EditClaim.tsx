@@ -13,9 +13,8 @@ const EditClaim: React.FC<EditClaimProps> = ({}) => {
   useEffect(() => {
     const fetchClaim = async () => {
       try {
-        const response = await fetch(
-          `https://ar-mvc-api.vercel.app/api/claims/${id}`
-        );
+        const response = await fetch(`
+https://ar-mvc-api.vercel.app/api/claims/${id}`);
         if (!response.ok) {
           throw new Error("Failed to fetch claim");
         }
@@ -35,7 +34,8 @@ const EditClaim: React.FC<EditClaimProps> = ({}) => {
 
     try {
       const response = await fetch(
-        `https://ar-mvc-api.vercel.app/api/claims/${id}`,
+        `
+https://ar-mvc-api.vercel.app/api/claims/${id}`,
         {
           method: "PUT",
           headers: {
