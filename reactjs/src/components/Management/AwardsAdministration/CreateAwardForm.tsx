@@ -22,8 +22,7 @@ const CreateAwardForm: React.FC<CreateAwardFormProps> = ({ onCreate }) => {
       // Calcula los puntos necesarios para el premio según el precio
       const puntos = Math.ceil(parseFloat(precio) / 0.8);
 
-      const response = await fetch("
-https://ar-mvc-api.vercel.app/api/awards", {
+      const response = await fetch("http://localhost:3000/api/awards", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -33,7 +32,7 @@ https://ar-mvc-api.vercel.app/api/awards", {
           etiqueta,
           descripcion,
           precio: parseFloat(precio),
-          puntos, // Utiliza los puntos calculados
+          puntos,
         }),
       });
 

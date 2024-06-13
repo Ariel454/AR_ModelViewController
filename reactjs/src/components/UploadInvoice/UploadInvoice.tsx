@@ -19,8 +19,7 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ user, onCreate }) => {
     event.preventDefault();
 
     try {
-      const response = await fetch("
-https://ar-mvc-api.vercel.app/api/invoices", {
+      const response = await fetch("http://localhost:3000/api/invoices", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

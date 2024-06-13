@@ -13,8 +13,7 @@ const EditClaim: React.FC<EditClaimProps> = ({}) => {
   useEffect(() => {
     const fetchClaim = async () => {
       try {
-        const response = await fetch(`
-https://ar-mvc-api.vercel.app/api/claims/${id}`);
+        const response = await fetch(`http://localhost:3000/api/claims/${id}`);
         if (!response.ok) {
           throw new Error("Failed to fetch claim");
         }
@@ -33,20 +32,16 @@ https://ar-mvc-api.vercel.app/api/claims/${id}`);
     event.preventDefault();
 
     try {
-      const response = await fetch(
-        `
-https://ar-mvc-api.vercel.app/api/claims/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            user_id: parseInt(userId, 10),
-            award_id: parseInt(awardId, 10),
-          }),
-        }
-      );
+      const response = await fetch(`http://localhost:3000/api/claims/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id: parseInt(userId, 10),
+          award_id: parseInt(awardId, 10),
+        }),
+      });
 
       if (!response.ok) {
         throw new Error("Error al actualizar el claim");
