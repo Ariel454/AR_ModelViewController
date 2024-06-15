@@ -27,8 +27,7 @@ const ApproveInvoices: React.FC<ApproveInvoicesProps> = ({ setUser }) => {
     const fetchDeniedInvoices = async () => {
       try {
         const response = await fetch(
-          "
-https://ar-mvc-api.vercel.app/api/invoices?estado=PENDIENTE"
+          "http://localhost:3000/api/invoices?estado=PENDIENTE"
         );
         if (!response.ok) {
           throw new Error("Failed to fetch denied invoices");
@@ -49,8 +48,7 @@ https://ar-mvc-api.vercel.app/api/invoices?estado=PENDIENTE"
   const updateInvoices = async () => {
     try {
       const response = await fetch(
-        "
-https://ar-mvc-api.vercel.app/api/invoices?estado=PENDIENTE"
+        `http://localhost:3000/api/invoices?estado=PENDIENTE`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch denied invoices");
@@ -67,8 +65,7 @@ https://ar-mvc-api.vercel.app/api/invoices?estado=PENDIENTE"
   const handleApproveInvoice = async (invoiceId: number) => {
     try {
       const response = await fetch(
-        `
-https://ar-mvc-api.vercel.app/api/invoices/${invoiceId}`,
+        `http://localhost:3000/api/invoices/${invoiceId}`,
         {
           method: "PUT",
           headers: {
@@ -92,13 +89,9 @@ https://ar-mvc-api.vercel.app/api/invoices/${invoiceId}`,
         throw new Error("Approved invoice not found");
       }
 
-      const bonusPercentage = await calculateBonus(approvedInvoice.user_id);
-      const points = approvedInvoice.precio * (0.05 + bonusPercentage / 100);
-
       // Obtener al usuario asociado a la factura
       const userResponse = await fetch(
-        `
-https://ar-mvc-api.vercel.app/api/users/${approvedInvoice.user_id}`
+        `http://localhost:3000/api/users/${approvedInvoice.user_id}`
       );
       const user = await userResponse.json();
       console.log("User updated" + JSON.stringify(user));
@@ -107,22 +100,48 @@ https://ar-mvc-api.vercel.app/api/users/${approvedInvoice.user_id}`
         throw new Error("User not found");
       }
 
-      // Actualizar los puntos del usuario
+      // Obtener reclamos del usuario
+      const claimsResponse = await fetch(`http://localhost:3000/api/claims`);
+      const claims = await claimsResponse.json();
+
+      // Filtrar reclamos del usuario actual
+      const userClaims = claims.filter(
+        (claim: any) => claim.user_id === user.id
+      );
+
+      // Agrupar reclamos por premio (award_id)
+      const groupedClaims = userClaims.reduce((acc: any, claim: any) => {
+        acc[claim.award_id] = acc[claim.award_id] || [];
+        acc[claim.award_id].push(claim);
+        return acc;
+      }, {});
+
+      // Calcular bonificaciones acumulativas
+      let totalBonus = 0;
+      for (const awardId in groupedClaims) {
+        const claimCount = groupedClaims[awardId].length;
+        if (claimCount > 1) {
+          // Calcular bono acumulativo (0.1% por cada reclamo adicional)
+          const bonus = (claimCount - 1) * 0.001;
+          totalBonus += bonus;
+        }
+      }
+
+      const bonusPercentage = await calculateBonus(approvedInvoice.user_id);
+      const points =
+        approvedInvoice.precio * (0.05 + bonusPercentage + totalBonus / 100);
+
+      // Sumar bono a los puntos del usuario
       user.puntos += points;
 
       // Actualizar al usuario en la base de datos
-      await fetch(
-        `
-https://ar-mvc-api.vercel.app/api/users/${approvedInvoice.user_id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(user),
-        }
-      );
-
+      await fetch(`http://localhost:3000/api/users/${user.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+      });
       setInvoices((prevInvoices) =>
         prevInvoices.map((invoice) =>
           invoice.id === invoiceId
@@ -140,8 +159,7 @@ https://ar-mvc-api.vercel.app/api/users/${approvedInvoice.user_id}`,
   const calculateBonus = async (userId: number): Promise<number> => {
     try {
       const response = await fetch(
-        `
-https://ar-mvc-api.vercel.app/api/invoices/approved/${userId}`
+        `http://localhost:3000/api/invoices/approved/${userId}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch approved invoices");
@@ -187,8 +205,7 @@ https://ar-mvc-api.vercel.app/api/invoices/approved/${userId}`
   const handleDenyInvoice = async (invoiceId: number) => {
     try {
       const response = await fetch(
-        `
-https://ar-mvc-api.vercel.app/api/invoices/${invoiceId}`,
+        `http://localhost:3000/api/invoices/${invoiceId}`,
         {
           method: "PUT",
           headers: {

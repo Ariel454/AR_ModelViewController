@@ -24,8 +24,7 @@ const ListClaims = () => {
   useEffect(() => {
     const fetchClaims = async () => {
       try {
-        const response = await fetch("
-https://ar-mvc-api.vercel.app/api/claims");
+        const response = await fetch("http://localhost:3000/api/claims");
         if (!response.ok) {
           throw new Error("Failed to fetch claims");
         }
@@ -44,8 +43,7 @@ https://ar-mvc-api.vercel.app/api/claims");
   const handleDeleteClaim = async (claimId: number) => {
     try {
       const response = await fetch(
-        `
-https://ar-mvc-api.vercel.app/api/claims/${claimId}`,
+        `http://localhost:3000/api/claims/${claimId}`,
         {
           method: "DELETE",
         }

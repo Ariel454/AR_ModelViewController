@@ -35,7 +35,10 @@ router.get("/claims", claimController.getClaims); // Obtener todos los reclamos
 router.get("/claims/:id", claimController.getClaimById); // Obtener un reclamo por su ID
 router.post("/claims", claimController.createClaim); // Crear un nuevo reclamo
 router.put("/claims/:id", claimController.updateClaim); // Actualizar un reclamo por su ID
-router.delete("/claims/:id", claimController.deleteClaim); // Eliminar un reclamo por su ID
+router.delete("/claims/:id", claimController.deleteClaim);
+router.get("/top-users-by-claims", claimController.getTopUsersByClaims);
+
+// Eliminar un reclamo por su ID
 
 router.get("/awards", awardController.getAwards); // Obtener todos los premios
 router.get("/awards/:id", awardController.getAwardById); // Obtener un premio por su ID
