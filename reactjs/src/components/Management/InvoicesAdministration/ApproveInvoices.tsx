@@ -48,7 +48,7 @@ const ApproveInvoices: React.FC<ApproveInvoicesProps> = ({ setUser }) => {
   const updateInvoices = async () => {
     try {
       const response = await fetch(
-        "http://localhost:3000/api/invoices?estado=PENDIENTE"
+        `http://localhost:3000/api/invoices?estado=PENDIENTE`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch denied invoices");
@@ -89,9 +89,6 @@ const ApproveInvoices: React.FC<ApproveInvoicesProps> = ({ setUser }) => {
         throw new Error("Approved invoice not found");
       }
 
-      const bonusPercentage = await calculateBonus(approvedInvoice.user_id);
-      const points = approvedInvoice.precio * (0.05 + bonusPercentage / 100);
-
       // Obtener al usuario asociado a la factura
       const userResponse = await fetch(
         `http://localhost:3000/api/users/${approvedInvoice.user_id}`
@@ -103,20 +100,48 @@ const ApproveInvoices: React.FC<ApproveInvoicesProps> = ({ setUser }) => {
         throw new Error("User not found");
       }
 
-      // Actualizar los puntos del usuario
+      // Obtener reclamos del usuario
+      const claimsResponse = await fetch(`http://localhost:3000/api/claims`);
+      const claims = await claimsResponse.json();
+
+      // Filtrar reclamos del usuario actual
+      const userClaims = claims.filter(
+        (claim: any) => claim.user_id === user.id
+      );
+
+      // Agrupar reclamos por premio (award_id)
+      const groupedClaims = userClaims.reduce((acc: any, claim: any) => {
+        acc[claim.award_id] = acc[claim.award_id] || [];
+        acc[claim.award_id].push(claim);
+        return acc;
+      }, {});
+
+      // Calcular bonificaciones acumulativas
+      let totalBonus = 0;
+      for (const awardId in groupedClaims) {
+        const claimCount = groupedClaims[awardId].length;
+        if (claimCount > 1) {
+          // Calcular bono acumulativo (0.1% por cada reclamo adicional)
+          const bonus = (claimCount - 1) * 0.001;
+          totalBonus += bonus;
+        }
+      }
+
+      const bonusPercentage = await calculateBonus(approvedInvoice.user_id);
+      const points =
+        approvedInvoice.precio * (0.05 + bonusPercentage + totalBonus / 100);
+
+      // Sumar bono a los puntos del usuario
       user.puntos += points;
 
       // Actualizar al usuario en la base de datos
-      await fetch(
-        `http://localhost:3000/api/users/${approvedInvoice.user_id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(user),
-        }
-      );
+      await fetch(`http://localhost:3000/api/users/${user.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+      });
 
       setInvoices((prevInvoices) =>
         prevInvoices.map((invoice) =>
@@ -197,15 +222,12 @@ const ApproveInvoices: React.FC<ApproveInvoicesProps> = ({ setUser }) => {
         throw new Error("Failed to deny invoice");
       }
 
-      setInvoices(
-        (
-          prevInvoices // Utiliza la función de actualización del estado
-        ) =>
-          prevInvoices.map((invoice) =>
-            invoice.id === invoiceId
-              ? { ...invoice, estado: Status.DENEGADO }
-              : invoice
-          )
+      setInvoices((prevInvoices) =>
+        prevInvoices.map((invoice) =>
+          invoice.id === invoiceId
+            ? { ...invoice, estado: Status.DENEGADO }
+            : invoice
+        )
       );
       setMessage("Factura denegada con éxito");
       await updateInvoices();

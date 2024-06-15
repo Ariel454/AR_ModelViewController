@@ -22,6 +22,8 @@ import { Award } from "../../types/award";
 import { User } from "../../types/user";
 import ApproveInvoices from "../Management/InvoicesAdministration/ApproveInvoices";
 import Store from "../Management/StoreAwards/store";
+import StatisticsAdministration from "../Management/StatisticsAdministration/StatisticsAdministrations";
+import TopUsersByClaims from "../Management/usersPerDate/usersPerDate";
 
 interface ExtendedLayoutProps {
   user: User | null;
@@ -90,6 +92,11 @@ const ExtendedLayout: React.FC<ExtendedLayoutProps> = ({ user, setUser }) => {
           <Route
             path="aprobar-facturas"
             element={<ApproveInvoices setUser={setUser} />}
+          />
+          <Route path="ver-stats" element={<TopUsersByClaims />} />
+          <Route
+            path="gestion-estadisticas"
+            element={<StatisticsAdministration />}
           />
           <Route
             path="reclamar-premios"

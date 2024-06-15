@@ -17,7 +17,7 @@ const CreateClaimForm: React.FC<CreateClaimFormProps> = ({ onCreate }) => {
     event.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:3000/api/claims", {
+      const response = await fetch("https://ar-mvc-api.vercel.app/api/claims", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

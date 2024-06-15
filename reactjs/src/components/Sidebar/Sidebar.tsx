@@ -22,6 +22,7 @@ const Sidebar: React.FC<SidebarProps> = ({ user }) => {
           { path: "/gestion-reclamos", label: "Gestión de Reclamos" },
           { path: "/gestion-premios", label: "Gestión de Premios" },
           { path: "/reclamar-premios", label: "Reclamar Premios" },
+          { path: "/ver-stats", label: "Ver Estadisticas" },
         ];
       case "COM":
         return [

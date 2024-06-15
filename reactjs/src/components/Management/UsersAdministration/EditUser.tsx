@@ -18,7 +18,9 @@ const EditUser: React.FC<EditUserProps> = ({}) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/users/${id}`);
+        const response = await fetch(
+          `https://ar-mvc-api.vercel.app/api/users/${id}`
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch user");
         }
@@ -42,21 +44,24 @@ const EditUser: React.FC<EditUserProps> = ({}) => {
     event.preventDefault();
 
     try {
-      const response = await fetch(`http://localhost:3000/api/users/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          codigo,
-          cedula,
-          email,
-          password,
-          direccion,
-          puntos,
-        }),
-      });
+      const response = await fetch(
+        `https://ar-mvc-api.vercel.app/api/users/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name,
+            codigo,
+            cedula,
+            email,
+            password,
+            direccion,
+            puntos,
+          }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Error al actualizar usuario");

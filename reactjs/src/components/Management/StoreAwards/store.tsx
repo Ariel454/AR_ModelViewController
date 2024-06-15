@@ -28,7 +28,9 @@ const Store: React.FC<StoreProps> = ({ user, setUser }) => {
   useEffect(() => {
     const fetchAwards = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/awards");
+        const response = await fetch(
+          "https://ar-mvc-api.vercel.app/api/awards"
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch awards");
         }
@@ -47,16 +49,19 @@ const Store: React.FC<StoreProps> = ({ user, setUser }) => {
   const handleClaimAward = async (awardId: number, awardPoints: number) => {
     if (user && user.puntos && user.puntos >= awardPoints) {
       try {
-        const response = await fetch("http://localhost:3000/api/claims", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            user_id: user.id,
-            award_id: awardId,
-          }),
-        });
+        const response = await fetch(
+          "https://ar-mvc-api.vercel.app/api/claims",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              user_id: user.id,
+              award_id: awardId,
+            }),
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Failed to claim award");
@@ -71,7 +76,7 @@ const Store: React.FC<StoreProps> = ({ user, setUser }) => {
         setUser(updatedUser);
 
         // Actualizar al usuario en la base de datos
-        await fetch(`http://localhost:3000/api/users/${user.id}`, {
+        await fetch(`https://ar-mvc-api.vercel.app/api/users/${user.id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",

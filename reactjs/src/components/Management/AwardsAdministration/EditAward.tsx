@@ -16,7 +16,9 @@ const EditAward: React.FC<EditAwardProps> = ({}) => {
   useEffect(() => {
     const fetchAward = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/awards/${id}`);
+        const response = await fetch(
+          `https://ar-mvc-api.vercel.app/api/awards/${id}`
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch award");
         }
@@ -38,18 +40,21 @@ const EditAward: React.FC<EditAwardProps> = ({}) => {
     event.preventDefault();
 
     try {
-      const response = await fetch(`http://localhost:3000/api/awards/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          codigo,
-          etiqueta,
-          precio: parseFloat(precio),
-          puntos: parseInt(puntos, 10),
-        }),
-      });
+      const response = await fetch(
+        `https://ar-mvc-api.vercel.app/api/awards/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            codigo,
+            etiqueta,
+            precio: parseFloat(precio),
+            puntos: parseInt(puntos, 10),
+          }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Error al actualizar premio");
