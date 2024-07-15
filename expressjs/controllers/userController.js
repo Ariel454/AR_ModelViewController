@@ -119,32 +119,17 @@ const predefinedUsers = [
 let users = [...predefinedUsers];
 
 exports.getUsers = (req, res) => {
-  const query = "SELECT * FROM User"; // Ajusta el nombre de la tabla según tu base de datos
-  db.query(query, (err, results) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send("Error fetching users");
-      return;
-    }
-    res.json(results);
-  });
+  res.json(users);
 };
 
 exports.getUserById = (req, res) => {
   const userId = parseInt(req.params.id);
-  const query = "SELECT * FROM User WHERE id = ?"; // Ajusta el nombre de la tabla y la columna según tu base de datos
-  db.query(query, [userId], (err, results) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send("Error fetching user");
-      return;
-    }
-    if (results.length === 0) {
-      res.status(404).json({ message: "Usuario no encontrado" });
-    } else {
-      res.json(results[0]);
-    }
-  });
+  const user = users.find((u) => u.id === userId);
+  if (!user) {
+    res.status(404).json({ message: "Usuario no encontrado" });
+  } else {
+    res.json(user);
+  }
 };
 
 let nextUserId = 11; // Comienza en 11 ya que tenemos 10 usuarios predefinidos
@@ -152,106 +137,65 @@ let nextUserId = 11; // Comienza en 11 ya que tenemos 10 usuarios predefinidos
 exports.createUser = (req, res) => {
   const { name, rol, codigo, cedula, email, password, direccion, puntos } =
     req.body;
-  const query =
-    "INSERT INTO User (name, rol, codigo, cedula, email, password, direccion, puntos) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"; // Ajusta el nombre de la tabla según tu base de datos
-  db.query(
-    query,
-    [name, rol, codigo, cedula, email, password, direccion, puntos],
-    (err, results) => {
-      if (err) {
-        console.error(err);
-        res.status(500).send("Error creating user");
-        return;
-      }
-      res.status(201).json({
-        id: results.insertId,
-        name,
-        rol,
-        codigo,
-        cedula,
-        email,
-        direccion,
-        puntos,
-      });
-    }
+  const newUser = new User(
+    nextUserId++,
+    name,
+    rol,
+    codigo,
+    cedula,
+    email,
+    password,
+    direccion,
+    puntos
   );
+  users.push(newUser);
+  res.status(201).json(newUser);
 };
 
 exports.updateUser = (req, res) => {
   const userId = parseInt(req.params.id);
   const { name, rol, codigo, cedula, email, password, direccion, puntos } =
     req.body;
-  const query =
-    "UPDATE User SET name = ?, rol = ?, codigo = ?, cedula = ?, email = ?, password = ?, direccion = ?, puntos = ? WHERE id = ?"; // Ajusta el nombre de la tabla según tu base de datos
-  db.query(
-    query,
-    [name, rol, codigo, cedula, email, password, direccion, puntos, userId],
-    (err, results) => {
-      if (err) {
-        console.error(err);
-        res.status(500).send("Error updating user");
-        return;
-      }
-      if (results.affectedRows === 0) {
-        res.status(404).json({ message: "Usuario no encontrado" });
-      } else {
-        res.json({
-          id: userId,
-          name,
-          rol,
-          codigo,
-          cedula,
-          email,
-          direccion,
-          puntos,
-        });
-      }
-    }
-  );
+  const userIndex = users.findIndex((u) => u.id === userId);
+  if (userIndex === -1) {
+    res.status(404).json({ message: "Usuario no encontrado" });
+  } else {
+    const updatedUser = new User(
+      userId,
+      name,
+      rol,
+      codigo,
+      cedula,
+      email,
+      password,
+      direccion,
+      puntos
+    );
+    users[userIndex] = updatedUser;
+    res.json(updatedUser);
+  }
 };
 
 exports.deleteUser = (req, res) => {
   const userId = parseInt(req.params.id);
-  const query = "DELETE FROM User WHERE id = ?"; // Ajusta el nombre de la tabla y la columna según tu base de datos
-  db.query(query, [userId], (err, results) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send("Error deleting user");
-      return;
-    }
-    if (results.affectedRows === 0) {
-      res.status(404).json({ message: "Usuario no encontrado" });
-    } else {
-      res.json({ id: userId });
-    }
-  });
+  const userIndex = users.findIndex((u) => u.id === userId);
+  if (userIndex === -1) {
+    res.status(404).json({ message: "Usuario no encontrado" });
+  } else {
+    users.splice(userIndex, 1);
+    res.json({ id: userId });
+  }
 };
 
 exports.login = (req, res) => {
   const { username, password } = req.body;
-  // Buscar al usuario por su correo electrónico en la base de datos
-  const query = "SELECT * FROM User WHERE email = ?"; // Ajusta el nombre de la tabla y la columna según tu base de datos
-  db.query(query, [username], (err, results) => {
-    if (err) {
-      console.error(err);
-      res.status(500).json({ message: "Error al buscar usuario" });
-      return;
-    }
-    if (results.length === 0) {
-      res.status(401).json({ message: "Usuario no encontrado" });
-      return;
-    }
-    const user = results[0];
-    // Verificar la contraseña
-    if (password !== user.password) {
-      res.status(401).json({ message: "Contraseña incorrecta" });
-      return;
-    }
-    // Si las credenciales son válidas, generar un token de sesión
-    const token = jwt.sign({ user: user }, secretKey, {
-      expiresIn: "1h",
-    });
-    // Incluir el usuario y el token en la respuesta
+  const user = users.find((u) => u.email === username);
+  if (!user) {
+    res.status(401).json({ message: "Usuario no encontrado" });
+  } else if (password !== user.password) {
+    res.status(401).json({ message: "Contraseña incorrecta" });
+  } else {
+    const token = jwt.sign({ user: user }, secretKey, { expiresIn: "1h" });
     res.json({ token, user });
-  });
+  }
 };
