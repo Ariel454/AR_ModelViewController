@@ -37,7 +37,7 @@ const ListAwards = () => {
     fetchAwards();
   }, []);
 
-  const handleDeleteAward = async (awardId: number) => {
+  const handleDeleteAward = async (awardId: number | undefined) => {
     try {
       const response = await fetch(
         `https://ar-mvc-api.vercel.app/api/awards/${awardId}`,
@@ -102,7 +102,7 @@ const ListAwards = () => {
                     View
                   </Button>
                   <Button
-                    onClick={() => handleDeleteAward(award.id)}
+                    onClick={() => handleDeleteAward(award?.id)}
                     variant="outlined"
                     color="secondary"
                   >

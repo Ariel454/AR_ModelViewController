@@ -46,7 +46,10 @@ const Store: React.FC<StoreProps> = ({ user, setUser }) => {
     fetchAwards();
   }, []);
 
-  const handleClaimAward = async (awardId: number, awardPoints: number) => {
+  const handleClaimAward = async (
+    awardId: number | undefined,
+    awardPoints: number
+  ) => {
     if (user && user.puntos && user.puntos >= awardPoints) {
       try {
         const response = await fetch(

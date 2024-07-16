@@ -41,9 +41,9 @@ const TopUsersByClaims: React.FC = () => {
 
   useEffect(() => {
     if (topUsers.length > 0 && users.length > 0) {
-      const filtered = users.filter((user: User) => {
+      const filtered = users.filter((user: User | undefined) => {
         return topUsers.some(
-          (topUser) => topUser.user_id === user.id.toString()
+          (topUser) => topUser.user_id === user?.id?.toString()
         );
       });
 
@@ -70,11 +70,13 @@ const TopUsersByClaims: React.FC = () => {
         <h2>Top Users</h2>
         <ul>
           {topUsers.map((user) => {
-            const userObj = users.find((u) => u.id.toString() === user.user_id);
+            const userObj = users.find(
+              (u) => u?.id?.toString() === user.user_id
+            );
             return (
               <li key={user.user_id}>
-                User ID: {user.user_id} - Name: {userObj?.name} - Premios:{" "}
-                {user.count}
+                User ID: {user.user_id} - Name: {userObj?.name || "Unknown"} -
+                Premios: {user.count}
               </li>
             );
           })}
