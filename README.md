@@ -51,6 +51,7 @@ The Service Pattern encapsulates business logic related to invoices:
 The Facade Pattern simplifies interactions with the underlying systems:
 
 - **InvoiceFacade**: Provides a simplified interface for fetching and updating invoices, hiding the complexity of the underlying API calls.
+![image](https://github.com/user-attachments/assets/33d5e64b-ad47-401b-ab3e-acb675e471c4)
 
 ### Strategy Pattern
 
@@ -58,13 +59,14 @@ The Strategy Pattern allows for interchangeable algorithms for bonus calculation
 
 - **BonusStrategy**: Interface defining methods for bonus calculation.
 - **BasicBonusStrategy / PremiumBonusStrategy**: Concrete implementations of BonusStrategy for different bonus logic.
-
+![image](https://github.com/user-attachments/assets/630a501b-932a-48c1-ab71-c29a799478ad)
 ### Command Pattern
 
 The Command Pattern encapsulates actions as objects, allowing for parameterization and queuing of operations:
 
 - **ApproveInvoiceCommand**: Command for approving an invoice.
 - **DenyInvoiceCommand**: Command for denying an invoice.
+![image](https://github.com/user-attachments/assets/0e382b9c-2449-4172-a223-6633acf8b288)
 
 ### Observer Pattern
 
@@ -72,7 +74,7 @@ The Observer Pattern enables a subscription mechanism to notify observers of cha
 
 - **InvoiceObserver**: Observes changes in invoice states.
 - **InvoiceSubject**: Manages observers and notifies them of changes.
-
+![image](https://github.com/user-attachments/assets/0b5e9b24-ea8c-4e65-9d8c-43c81275b97c)
 
 
 ## Implementation
@@ -80,10 +82,10 @@ The Observer Pattern enables a subscription mechanism to notify observers of cha
 The following diagram illustrates the structure and relationships among the various components:
 
 ![image](https://github.com/user-attachments/assets/5a4846bb-a95a-4d5e-a52a-234774d6d967)
-![image](https://github.com/user-attachments/assets/630a501b-932a-48c1-ab71-c29a799478ad)
-![image](https://github.com/user-attachments/assets/0e382b9c-2449-4172-a223-6633acf8b288)
-![image](https://github.com/user-attachments/assets/33d5e64b-ad47-401b-ab3e-acb675e471c4)
-- ![image](https://github.com/user-attachments/assets/0b5e9b24-ea8c-4e65-9d8c-43c81275b97c)
+
+
+
+
 
 
 This structure ensures that the CreateInvoiceForm and ApproveInvoices components are robust, maintainable, and adaptable to future changes in requirements.
