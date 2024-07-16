@@ -33,18 +33,8 @@ The Service Pattern encapsulates business logic related to invoices:
 InvoiceService: Contains methods for creating invoices and relies on InvoiceRepository for data access.
 
 ## Implementation
-src/
-│
-├── components/
-│   └── CreateInvoiceForm.tsx
-│
-├── services/
-│   └── InvoiceService.ts
-│
-└── repositories/
-    ├── InvoiceRepository.ts
-    └── ApiInvoiceRepository.ts
 
+![image](https://github.com/user-attachments/assets/5a4846bb-a95a-4d5e-a52a-234774d6d967)
 
 # AR_ModelViewController
 
