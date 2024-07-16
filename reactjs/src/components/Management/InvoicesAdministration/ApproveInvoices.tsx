@@ -12,8 +12,9 @@ import {
 } from "@mui/material";
 
 import { Invoice, Status } from "../../../types/invoice";
-import { User } from "../../../types/user";
-
+import { invoiceFacade } from "../../utils/services/InvoiceFacade";
+import { ApproveInvoiceCommand } from "../../utils/commands/ApproveInvoiceCommand";
+import { DenyInvoiceCommand } from "../../utils/commands/ApproveInvoiceCommand";
 interface ApproveInvoicesProps {
   setUser: (data: any) => void;
 }
@@ -24,125 +25,28 @@ const ApproveInvoices: React.FC<ApproveInvoicesProps> = ({ setUser }) => {
   const [message, setMessage] = useState<string>("");
 
   useEffect(() => {
-    const fetchDeniedInvoices = async () => {
+    const fetchInvoices = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:3000/api/invoices?estado=PENDIENTE"
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch denied invoices");
-        }
-        const data = await response.json();
+        const data = await invoiceFacade.fetchPendingInvoices();
         setInvoices(data);
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching denied invoices:", error);
+        console.error("Error fetching invoices:", error);
         setLoading(false);
       }
     };
 
-    fetchDeniedInvoices();
-  }, []); // Sin dependencias
+    fetchInvoices();
+  }, []);
 
-  // Callback para actualizar las facturas después de aprobar o denegar una factura
-  const updateInvoices = async () => {
-    try {
-      const response = await fetch(
-        `http://localhost:3000/api/invoices?estado=PENDIENTE`
-      );
-      if (!response.ok) {
-        throw new Error("Failed to fetch denied invoices");
-      }
-      const data = await response.json();
-      setInvoices(data);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching denied invoices:", error);
-      setLoading(false);
+  const handleApproveInvoice = async (invoiceId: number | undefined) => {
+    if (invoiceId === undefined) {
+      console.error("El ID de la factura no está definido");
+      return; // O maneja el error como prefieras
     }
-  };
-
-  const handleApproveInvoice = async (invoiceId: number) => {
     try {
-      const response = await fetch(
-        `http://localhost:3000/api/invoices/${invoiceId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            estado: "APROBADO",
-          }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to approve invoice");
-      }
-
-      const approvedInvoice = invoices.find(
-        (invoice) => invoice.id === invoiceId
-      );
-
-      if (!approvedInvoice) {
-        throw new Error("Approved invoice not found");
-      }
-
-      // Obtener al usuario asociado a la factura
-      const userResponse = await fetch(
-        `http://localhost:3000/api/users/${approvedInvoice.user_id}`
-      );
-      const user = await userResponse.json();
-      console.log("User updated" + JSON.stringify(user));
-      // Verificar si el usuario existe
-      if (!user) {
-        throw new Error("User not found");
-      }
-
-      // Obtener reclamos del usuario
-      const claimsResponse = await fetch(`http://localhost:3000/api/claims`);
-      const claims = await claimsResponse.json();
-
-      // Filtrar reclamos del usuario actual
-      const userClaims = claims.filter(
-        (claim: any) => claim.user_id === user.id
-      );
-
-      // Agrupar reclamos por premio (award_id)
-      const groupedClaims = userClaims.reduce((acc: any, claim: any) => {
-        acc[claim.award_id] = acc[claim.award_id] || [];
-        acc[claim.award_id].push(claim);
-        return acc;
-      }, {});
-
-      // Calcular bonificaciones acumulativas
-      let totalBonus = 0;
-      for (const awardId in groupedClaims) {
-        const claimCount = groupedClaims[awardId].length;
-        if (claimCount > 1) {
-          // Calcular bono acumulativo (0.1% por cada reclamo adicional)
-          const bonus = (claimCount - 1) * 0.001;
-          totalBonus += bonus;
-        }
-      }
-
-      const bonusPercentage = await calculateBonus(approvedInvoice.user_id);
-      const points =
-        approvedInvoice.precio * (0.05 + bonusPercentage + totalBonus / 100);
-
-      // Sumar bono a los puntos del usuario
-      user.puntos += points;
-
-      // Actualizar al usuario en la base de datos
-      await fetch(`http://localhost:3000/api/users/${user.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user),
-      });
-
+      const command = new ApproveInvoiceCommand(invoiceId);
+      await command.execute();
       setInvoices((prevInvoices) =>
         prevInvoices.map((invoice) =>
           invoice.id === invoiceId
@@ -151,77 +55,19 @@ const ApproveInvoices: React.FC<ApproveInvoicesProps> = ({ setUser }) => {
         )
       );
       setMessage("Factura aprobada con éxito");
-      await updateInvoices();
     } catch (error) {
       console.error("Error approving invoice:", error);
     }
   };
 
-  const calculateBonus = async (userId: number): Promise<number> => {
-    try {
-      const response = await fetch(
-        `http://localhost:3000/api/invoices/approved/${userId}`
-      );
-      if (!response.ok) {
-        throw new Error("Failed to fetch approved invoices");
-      }
-      const userInvoices: Invoice[] = await response.json();
-
-      if (userInvoices.length === 0) {
-        return 0; // Si no hay facturas aprobadas, no hay bonificación
-      }
-
-      // Ordenar las facturas por fecha (más antiguas primero)
-      userInvoices.sort(
-        (a: Invoice, b: Invoice) =>
-          new Date(a.fecha).getTime() - new Date(b.fecha).getTime()
-      );
-
-      let totalBonus = 0;
-      let currentBonus = 0;
-      let currentStartDate = new Date(userInvoices[0].fecha);
-      let currentEndDate = new Date(currentStartDate);
-      currentEndDate.setDate(currentEndDate.getDate() + 7); // Sumar 7 días
-
-      userInvoices.forEach((invoice: Invoice) => {
-        const invoiceDate = new Date(invoice.fecha);
-        if (invoiceDate >= currentStartDate && invoiceDate <= currentEndDate) {
-          currentBonus += 0.3;
-        } else {
-          currentStartDate = new Date(invoiceDate);
-          currentEndDate = new Date(currentStartDate);
-          currentEndDate.setDate(currentEndDate.getDate() + 7);
-          currentBonus = 0.3;
-        }
-      });
-
-      totalBonus += currentBonus; // Sumar el bonus actual al total después del bucle
-      return totalBonus;
-    } catch (error) {
-      console.error("Error calculating bonus:", error);
-      return 0;
+  const handleDenyInvoice = async (invoiceId: number | undefined) => {
+    if (invoiceId === undefined) {
+      console.error("El ID de la factura no está definido");
+      return; // O maneja el error como prefieras
     }
-  };
-
-  const handleDenyInvoice = async (invoiceId: number) => {
     try {
-      const response = await fetch(
-        `http://localhost:3000/api/invoices/${invoiceId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            estado: "DENEGADO",
-          }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to deny invoice");
-      }
-
+      const command = new DenyInvoiceCommand(invoiceId);
+      await command.execute();
       setInvoices((prevInvoices) =>
         prevInvoices.map((invoice) =>
           invoice.id === invoiceId
@@ -230,7 +76,6 @@ const ApproveInvoices: React.FC<ApproveInvoicesProps> = ({ setUser }) => {
         )
       );
       setMessage("Factura denegada con éxito");
-      await updateInvoices();
     } catch (error) {
       console.error("Error denying invoice:", error);
     }
@@ -272,14 +117,14 @@ const ApproveInvoices: React.FC<ApproveInvoicesProps> = ({ setUser }) => {
                   <Button
                     variant="outlined"
                     color="primary"
-                    onClick={() => handleApproveInvoice(invoice.id)}
+                    onClick={() => handleApproveInvoice(invoice?.id)}
                   >
                     Aprobar
                   </Button>
                   <Button
                     variant="outlined"
                     color="secondary"
-                    onClick={() => handleDenyInvoice(invoice.id)}
+                    onClick={() => handleDenyInvoice(invoice?.id)}
                   >
                     Denegar
                   </Button>

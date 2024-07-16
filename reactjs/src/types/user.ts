@@ -2,7 +2,7 @@ import { Claim } from "./claim";
 import { Invoice } from "./invoice";
 
 export interface User {
-  id: number;
+  id?: number;
   name: string;
   rol: string;
   codigo: string;
@@ -11,6 +11,6 @@ export interface User {
   password: string;
   direccion: string;
   puntos: number;
-  reclamos: Claim[];
-  facturas: Invoice[];
+  reclamos?: Claim[];
+  facturas?: Invoice[];
 }

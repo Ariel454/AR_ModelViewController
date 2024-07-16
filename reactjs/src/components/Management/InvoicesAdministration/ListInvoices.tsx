@@ -37,7 +37,7 @@ const ListInvoices = () => {
     fetchInvoices();
   }, []);
 
-  const handleDeleteInvoice = async (invoiceId: number) => {
+  const handleDeleteInvoice = async (invoiceId: number | undefined) => {
     try {
       const response = await fetch(
         `https://ar-mvc-api.vercel.app/api/invoices/${invoiceId}`,
@@ -102,7 +102,7 @@ const ListInvoices = () => {
                     View
                   </Button>
                   <Button
-                    onClick={() => handleDeleteInvoice(invoice.id)}
+                    onClick={() => handleDeleteInvoice(invoice?.id)}
                     variant="outlined"
                     color="secondary"
                   >

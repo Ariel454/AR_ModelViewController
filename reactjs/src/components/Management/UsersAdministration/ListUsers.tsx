@@ -35,7 +35,7 @@ const ListUsers = () => {
     fetchUsers();
   }, []);
 
-  const handleDeleteUser = async (userId: number) => {
+  const handleDeleteUser = async (userId: number | undefined) => {
     try {
       const response = await fetch(
         `https://ar-mvc-api.vercel.app/api/users/${userId}`,

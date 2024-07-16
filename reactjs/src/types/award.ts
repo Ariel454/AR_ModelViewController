@@ -1,5 +1,5 @@
 export interface Award {
-  id: number;
+  id?: number;
   codigo: string;
   etiqueta: string;
   descripcion: string;

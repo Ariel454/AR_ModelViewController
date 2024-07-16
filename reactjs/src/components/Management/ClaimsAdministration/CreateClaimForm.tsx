@@ -1,8 +1,10 @@
+// CreateClaimForm.tsx
 import React, { useState } from "react";
 import { TextField, Button, Grid, Typography } from "@mui/material";
-
 import ListClaims from "./ListClaims";
 import { Claim } from "../../../types/claim";
+import { ClaimService } from "../../utils/services/ClaimService";
+import { ApiClaimRepository } from "../../utils/repositories/ClaimRepository";
 
 interface CreateClaimFormProps {
   onCreate: (claimData: Claim) => void;
@@ -13,26 +15,17 @@ const CreateClaimForm: React.FC<CreateClaimFormProps> = ({ onCreate }) => {
   const [awardId, setAwardId] = useState<string>("");
   const [message, setMessage] = useState<string>("");
 
+  const claimService = new ClaimService(new ApiClaimRepository());
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     try {
-      const response = await fetch("https://ar-mvc-api.vercel.app/api/claims", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          user_id: parseInt(userId, 10),
-          award_id: parseInt(awardId, 10),
-        }),
+      const newClaim = await claimService.createClaim({
+        user_id: parseInt(userId, 10),
+        award_id: parseInt(awardId, 10),
       });
 
-      if (!response.ok) {
-        throw new Error("Error al crear reclamo");
-      }
-
-      const newClaim = await response.json();
       onCreate(newClaim);
       setUserId("");
       setAwardId("");

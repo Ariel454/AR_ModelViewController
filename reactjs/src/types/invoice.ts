@@ -1,5 +1,5 @@
 export interface Invoice {
-  id: number;
+  id?: number;
   codigo: string;
   user_id: number;
   fecha: string;

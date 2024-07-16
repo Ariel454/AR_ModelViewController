@@ -1,3 +1,4 @@
+// CreateUserForm.tsx
 import React, { useState } from "react";
 import {
   TextField,
@@ -9,9 +10,10 @@ import {
   FormControl,
   InputLabel,
 } from "@mui/material";
-
 import ListUsers from "./ListUsers";
 import { User } from "../../../types/user";
+import { UserService } from "../../utils/services/UserService";
+import { ApiUserRepository } from "../../utils/repositories/UserRepository";
 
 interface CreateUserFormProps {
   onCreate: (userData: User) => void;
@@ -28,32 +30,23 @@ const CreateUserForm: React.FC<CreateUserFormProps> = ({ onCreate }) => {
   const [rol, setRol] = useState<string>("");
   const [message, setMessage] = useState<string>("");
 
+  const userService = new UserService(new ApiUserRepository());
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     try {
-      const response = await fetch("https://ar-mvc-api.vercel.app/api/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          codigo,
-          cedula,
-          email,
-          password,
-          direccion,
-          puntos: parseInt(puntos, 10),
-          rol,
-        }),
+      const newUser = await userService.createUser({
+        name,
+        codigo,
+        cedula,
+        email,
+        password,
+        direccion,
+        puntos: parseInt(puntos, 10),
+        rol,
       });
 
-      if (!response.ok) {
-        throw new Error("Error al crear usuario");
-      }
-
-      const newUser = await response.json();
       onCreate(newUser);
       setName("");
       setCodigo("");
@@ -76,7 +69,7 @@ const CreateUserForm: React.FC<CreateUserFormProps> = ({ onCreate }) => {
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <TextField
-              label="Name"
+              label="Nombre"
               variant="outlined"
               fullWidth
               value={name}
@@ -115,6 +108,7 @@ const CreateUserForm: React.FC<CreateUserFormProps> = ({ onCreate }) => {
               label="Contraseña"
               variant="outlined"
               fullWidth
+              type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />

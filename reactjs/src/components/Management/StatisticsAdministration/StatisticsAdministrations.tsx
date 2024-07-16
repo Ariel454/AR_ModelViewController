@@ -15,7 +15,7 @@ const columns: GridColDef[] = [
 ];
 
 type UserStatistics = {
-  id: number;
+  id: number | undefined;
   name: string;
   email: string;
   facturas: number;

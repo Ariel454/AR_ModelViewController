@@ -1,5 +1,5 @@
 export interface Claim {
-  id: number;
+  id?: number;
   user_id: number;
   award_id: number;
 }

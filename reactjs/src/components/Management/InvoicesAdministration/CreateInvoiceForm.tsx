@@ -1,8 +1,10 @@
+// CreateInvoiceForm.tsx
 import React, { useState } from "react";
 import { TextField, Button, Grid, Typography } from "@mui/material";
-
 import ListInvoices from "./ListInvoices";
-import { Invoice } from "../../../types/invoice";
+import { Invoice, Status } from "../../../types/invoice";
+import { InvoiceService } from "../../utils/services/InvoiceService";
+import { ApiInvoiceRepository } from "../../utils/repositories/InvoiceRepository";
 
 interface CreateInvoiceFormProps {
   onCreate: (invoiceData: Invoice) => void;
@@ -16,33 +18,20 @@ const CreateInvoiceForm: React.FC<CreateInvoiceFormProps> = ({ onCreate }) => {
   const [precio, setPrecio] = useState<string>("");
   const [message, setMessage] = useState<string>("");
 
+  const invoiceService = new InvoiceService(new ApiInvoiceRepository());
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     try {
-      const response = await fetch(
-        "https://ar-mvc-api.vercel.app/api/invoices",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            recibo,
-            codigo,
-            user_id: parseInt(userId, 10),
-            fecha,
-            precio: parseFloat(precio),
-            estado: "PENDIENTE",
-          }),
-        }
-      );
+      const newInvoice = await invoiceService.createInvoice({
+        codigo,
+        user_id: parseInt(userId, 10),
+        fecha,
+        precio: parseFloat(precio),
+        estado: Status.PENDIENTE,
+      });
 
-      if (!response.ok) {
-        throw new Error("Error al crear factura");
-      }
-
-      const newInvoice = await response.json();
       onCreate(newInvoice);
       setCodigo("");
       setUserId("");

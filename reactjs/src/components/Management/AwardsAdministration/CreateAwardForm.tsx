@@ -1,8 +1,10 @@
+// CreateAwardForm.tsx
 import React, { useState } from "react";
 import { TextField, Button, Grid, Typography } from "@mui/material";
-
 import ListAwards from "./ListAwards";
 import { Award } from "../../../types/award";
+import { AwardService } from "../../utils/services/AwardService";
+import { ApiAwardRepository } from "../../utils/repositories/AwardRepository";
 
 interface CreateAwardFormProps {
   onCreate: (awardData: Award) => void;
@@ -15,6 +17,8 @@ const CreateAwardForm: React.FC<CreateAwardFormProps> = ({ onCreate }) => {
   const [precio, setPrecio] = useState<string>("");
   const [message, setMessage] = useState<string>("");
 
+  const awardService = new AwardService(new ApiAwardRepository());
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -22,25 +26,14 @@ const CreateAwardForm: React.FC<CreateAwardFormProps> = ({ onCreate }) => {
       // Calcula los puntos necesarios para el premio según el precio
       const puntos = Math.ceil(parseFloat(precio) / 0.8);
 
-      const response = await fetch("https://ar-mvc-api.vercel.app/api/awards", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          codigo,
-          etiqueta,
-          descripcion,
-          precio: parseFloat(precio),
-          puntos,
-        }),
+      const newAward = await awardService.createAward({
+        codigo,
+        etiqueta,
+        descripcion,
+        precio: parseFloat(precio),
+        puntos,
       });
 
-      if (!response.ok) {
-        throw new Error("Error al crear premio");
-      }
-
-      const newAward = await response.json();
       onCreate(newAward);
       setCodigo("");
       setEtiqueta("");
